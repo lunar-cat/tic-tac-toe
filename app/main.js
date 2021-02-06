@@ -1,8 +1,10 @@
 'use strict';
 
 function IAmakeMove() {
-    let bestMove, bestPosition;
-    // Mejor movimiento, posición;
+    let bestMoveValue, bestMovePosition;
+    // Acá llamaríamos a getBoard() para tener el estado del tablero
+    // Haríamos un nuevo tablero, pero con los valores en posición
+    // Calcularíamos el posible enemigo, y el futuro nuestro
     // for posición en =>
         // Valor actual del movimiento en = 0;
         // Posición actual;
@@ -19,14 +21,51 @@ function IAmakeMove() {
             // posición mejor mov = posición actual
     // return {mejor movimiento, posición}
 }
+function valueRow(x, y, player){
+    // const array = getBoard[x];
+    // return array;
+
+}
+function valueColumn(x, y, player){
+    // const array = [ getBoard[0][y], getBoard[1][y], getBoard[2][y] ]
+    // return array;
+}
+function valueDiagonal(x, y, player){
+    // contador = (y) ? -1 : 1; 0 es falso, 2 es true
+    // const array = [ getBoard[0][y], 
+    //              getBoard[1][contador + y], 
+    //              getBoard[2][(contador * 2) + y] ]
+    // return array;
+}
+function checkArray(array, x, y, player){
+    // valueMove = 0;
+    // revisar si ganamos getBoard[x].every(value => value === player);
+        // si es true, valueRow + 1; return;
+    // revisar si no hay ningún valor, getBoard[x].includes(player);
+        // si no encuentra ninguna jugada nuestra, devuelve false
+        // return valueRow = 0;
+    // Si no ganamos, revisar manualmente
+    // si la posición [y] es 0 o 1, checkNext(y + 1)
+        // Si el checkNext es del valor ${player}, valueRow + 0.2
+    // si la posición [y] es 2 o 1, checkPrevious(y - 1)
+        // Si el checkPrevious es del valor ${player}, valueRow + 0.2
+    // return valueRow;
+}
+/* Según veo, repetimos el mismo código en cada array
+mejor hacemos 3 funciones que devuelvan un array de la row, column
+y si corresponde, del diagonal
+Y luego a esa array, se le aplica el mismo código, de ver  si ganamos
+Si no hay ningún valor, si el enemigo tiene, etc */
+
+
 function Game() {
     const _board = [
-        [0,0,0],
-        [0,0,0],
-        [0,0,0]
+        [1,0,0],
+        [0,2,2],
+        [2,0,1]
     ];
-    const checkMove = ({x, y}) => {
-        return !_board[x][y];
+    const getBoard = () => {
+        return _board;
     };
     const makeMove = ({x, y}, player) => {
         _board[x][y] = player;
