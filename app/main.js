@@ -1,62 +1,65 @@
 'use strict';
 
-function IAmakeMove() {
-    let bestMoveValue, bestMovePosition;
-    // Acá llamaríamos a getBoard() para tener el estado del tablero
-    // Haríamos un nuevo tablero, pero con los valores en posición
-    // Calcularíamos el posible enemigo, y el futuro nuestro
-    // for posición en =>
-        // Valor actual del movimiento en = 0;
-        // Posición actual;
-        //Filas/Columnas/Diagonal;
-            // Si hay 1 jugada adyacente ya hecha, sumar 0.2 al mov;
-            // Si hay 2 significa que gana
-                // suma 1
-                // return posición jugada{x: x, y: y}
-            // Si hay 2 adyacentes enemigos, debe bloquear
-                // suma 0.8
-                // return posición jugada{x: x, y: y}
-        // Si el valor de movimiento > mejor movimiento
-            // mejor movimiento = valor actual
-            // posición mejor mov = posición actual
-    // return {mejor movimiento, posición}
+function IAmakeMove(board, IASymbol) {
+    const nodeMoveTree = {};
+    Object.defineProperty(nodeMoveTree, 'index', {
+        value: 0,
+        enumerable: false,
+    });
+    nodeMoveTree.addNode = (node) => {
+        nodeMoveTree[nodeMoveTree.index++] = node;
+    }
+    nodeMoveTree.bestMove = () => {
+        const node = Array.from(Object.values(nodeMoveTree)).sort((a, b) => b.value - a.value);
+        return node[0];
+    }
+    for (let colPosition = 0; colPosition < board.length; colPosition++) {
+        const boardRow = getRow(colPosition, board);
+        for (let rowPosition = 0; rowPosition < boardRow.length; rowPosition++) {
+            const moveCoordinates = {x: rowPosition, y: colPosition};
+            let setMoves = [];
+            let totalSetValue = 0;
+            const boardCol = getColumn(rowPosition, board);
+            setMoves.push(boardRow, boardCol);
+            if (moveCoordinates.x != 1) {   
+                const boardDiag = getDiagonal(rowPosition, board);
+                setMoves.push(boardDiag);
+            }
+            setMoves.forEach(set => {
+                totalSetValue += checkSetMoves(set, moveCoordinates.x, IASymbol);
+            });
+            nodeMoveTree.addNode({value: totalSetValue, coordinates: moveCoordinates});
+        }
+    }
+    return nodeMoveTree.bestMove();
 }
-function valueRow(x, y, player){
-    // const array = getBoard[x];
-    // return array;
-
+function getRow(y, board){
+    const r = board[y];
+    return r;
 }
-function valueColumn(x, y, player){
-    // const array = [ getBoard[0][y], getBoard[1][y], getBoard[2][y] ]
-    // return array;
+function getColumn(x, board){
+    const c = [
+        board[0][x],
+        board[1][x],
+        board[2][x],
+    ]
+    return c;
 }
-function valueDiagonal(x, y, player){
-    // contador = (y) ? -1 : 1; 0 es falso, 2 es true
-    // const array = [ getBoard[0][y], 
-    //              getBoard[1][contador + y], 
-    //              getBoard[2][(contador * 2) + y] ]
-    // return array;
+function getDiagonal(x, board){
+    const counter = (x) ? -1 : 1; // 0 es falso, 2 es true
+    const d = [board[0][x], 
+        board[1][counter + x], 
+        board[2][(counter * 2) + x]]
+    return d;
 }
-function checkArray(array, x, y, player){
-    // valueMove = 0;
-    // revisar si ganamos getBoard[x].every(value => value === player);
-        // si es true, valueRow + 1; return;
-    // revisar si no hay ningún valor, getBoard[x].includes(player);
-        // si no encuentra ninguna jugada nuestra, devuelve false
-        // return valueRow = 0;
-    // Si no ganamos, revisar manualmente
-    // si la posición [y] es 0 o 1, checkNext(y + 1)
-        // Si el checkNext es del valor ${player}, valueRow + 0.2
-    // si la posición [y] es 2 o 1, checkPrevious(y - 1)
-        // Si el checkPrevious es del valor ${player}, valueRow + 0.2
-    // return valueRow;
+function checkSetMoves(set, x, IASymbol){
+    let valueMove = 0;
+    if (set.every(value => value === IASymbol)) valueMove += 1; // Revisa si ganamos
+    if (!set.includes(IASymbol)) return valueMove; // Si no hay ningún movimiento nuestro, return;
+    if (x <= 1 && set[x + 1] === IASymbol) valueMove += 0.2; // Revisa el siguiente
+    if (x >= 1 && set[x - 1] === IASymbol) valueMove += 0.2; // Revisa el anterior
+    return valueMove;
 }
-/* Según veo, repetimos el mismo código en cada array
-mejor hacemos 3 funciones que devuelvan un array de la row, column
-y si corresponde, del diagonal
-Y luego a esa array, se le aplica el mismo código, de ver  si ganamos
-Si no hay ningún valor, si el enemigo tiene, etc */
-
 
 function Game() {
     const _board = [
