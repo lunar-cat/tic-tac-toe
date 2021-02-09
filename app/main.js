@@ -5,6 +5,8 @@ function IAmakeMove(board, IASymbol) {
     Object.defineProperty(nodeMoveTree, 'index', {
         value: 0,
         enumerable: false,
+        configurable: true,
+        writable: true
     });
     nodeMoveTree.addNode = (node) => {
         nodeMoveTree[nodeMoveTree.index++] = node;
@@ -13,31 +15,38 @@ function IAmakeMove(board, IASymbol) {
         const node = Array.from(Object.values(nodeMoveTree)).sort((a, b) => b.value - a.value);
         return node[0];
     }
+
     for (let colPosition = 0; colPosition < board.length; colPosition++) {
         const boardRow = getRow(colPosition, board);
+
         for (let rowPosition = 0; rowPosition < boardRow.length; rowPosition++) {
-            const moveCoordinates = {x: rowPosition, y: colPosition};
-            let setMoves = [];
-            let totalSetValue = 0;
+            if (board[colPosition][rowPosition] != 0) continue;
             const boardCol = getColumn(rowPosition, board);
-            setMoves.push(boardRow, boardCol);
-            if (moveCoordinates.x != 1) {   
-                const boardDiag = getDiagonal(rowPosition, board);
-                setMoves.push(boardDiag);
+            const moveCoordinates = { x: rowPosition, y: colPosition };
+            let totalSetValue = 0;
+            let setMoves = [];
+
+            setMoves.push([boardRow, 'row'], [boardCol, 'col']);
+            if (moveCoordinates.x != 1 && moveCoordinates.y != 1
+                || moveCoordinates.x === 1 && moveCoordinates.y === 1) {
+                const boardDiag = getDiagonal(rowPosition, colPosition, board);
+                boardDiag.forEach(arr => {
+                    setMoves.push([arr, 'diag']);
+                });
             }
             setMoves.forEach(set => {
-                totalSetValue += checkSetMoves(set, moveCoordinates.x, IASymbol);
+                totalSetValue += checkSetMoves(set, moveCoordinates.x, moveCoordinates.y, IASymbol);
             });
-            nodeMoveTree.addNode({value: totalSetValue, coordinates: moveCoordinates});
+            nodeMoveTree.addNode({ value: totalSetValue.toFixed(2), coordinates: moveCoordinates });
         }
     }
     return nodeMoveTree.bestMove();
 }
-function getRow(y, board){
+function getRow(y, board) {
     const r = board[y];
     return r;
 }
-function getColumn(x, board){
+function getColumn(x, board) {
     const c = [
         board[0][x],
         board[1][x],
@@ -45,55 +54,81 @@ function getColumn(x, board){
     ]
     return c;
 }
-function getDiagonal(x, board){
-    const counter = (x) ? -1 : 1; // 0 es falso, 2 es true
-    const d = [board[0][x], 
-        board[1][counter + x], 
-        board[2][(counter * 2) + x]]
-    return d;
+function getDiagonal(x, y, board) {
+    if (x != 1) {
+        const counterX = (x === 0) ? 1 : -1;
+        const counterY = (y === 0) ? 1 : -1;
+        const d = [board[y][x], board[y + counterY][counterX + x], board[y + counterY + counterY][counterX + counterX + x]];
+        return [d];
+    } else {
+        const d = [board[0][0], board[1][1], board[2][2]];
+        const e = [board[0][2], board[1][1], board[2][0]];
+        return [d, e];
+    }
 }
-function checkSetMoves(set, x, IASymbol){
+function checkSetMoves(set, x, y, IASymbol) {
     let valueMove = 0;
-    if (set.every(value => value === IASymbol)) valueMove += 1; // Revisa si ganamos
-    if (!set.includes(IASymbol)) return valueMove; // Si no hay ningún movimiento nuestro, return;
-    if (x <= 1 && set[x + 1] === IASymbol) valueMove += 0.2; // Revisa el siguiente
-    if (x >= 1 && set[x - 1] === IASymbol) valueMove += 0.2; // Revisa el anterior
-    return valueMove;
+    let userSymbol = (IASymbol === 2) ? 1 : 2;
+    let position = (set[1] === 'col') ? y : x;
+
+    let testWinOrLose = set[0].slice();
+    testWinOrLose[position] = IASymbol;
+    if (testWinOrLose.every(value => value === IASymbol)) valueMove += 5; // Revisa si ganamos
+    testWinOrLose[position] = userSymbol;
+    if (testWinOrLose.every(value => value === userSymbol)) valueMove += 3; // Revisa si perdimos
+    if (!set[0].includes(IASymbol) && set[0].includes(userSymbol)) valueMove += 0.4; // Revisa si podemos bloquear a futuro
+    if (!set[0].includes(IASymbol)) return valueMove; // Si no hay ningún movimiento nuestro, return;
+    if (set[0].includes(userSymbol)) return valueMove; // Si el set en cuestión, tiene un valor enemigo en medio, no nos sirve para ganar ahí po esto quizá deba quitarlo después
+    if (position <= 1 && set[0][position + 1] === IASymbol) valueMove += 0.4; // Revisa el siguiente
+    if (position >= 1 && set[0][position - 1] === IASymbol) valueMove += 0.4; // Revisa el anterior
+
+    return +valueMove.toFixed(2);
 }
 
 function Game() {
     const _board = [
-        [1,0,0],
-        [0,2,2],
-        [2,0,1]
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
     ];
     const getBoard = () => {
         return _board;
     };
-    const makeMove = ({x, y}, player) => {
-        _board[x][y] = player;
+    const makeMove = ({ x, y }, player) => {
+        _board[y][x] = player;
+        return gameContinue({ x, y }, player);
     };
-    const gameStatus = () => {
-        // Revisa si alguien hace 3 en línea luego de makeMove
-        // Return true o false
+    const gameContinue = ({ x, y }, player) => {
+        let setMoves = [];
+        setMoves.push(getRow(y, _board), getColumn(x, _board));
+        if (x != 1 && y != 1 || x === 1 && y === 1) {
+            const boardDiag = getDiagonal(x, y, _board);
+            boardDiag.forEach(arr => setMoves.push(arr));
+        }
+        if (setMoves.some(set => (set.every(value => value === player)))) return 'Ha ganado!';
+        if (_board.some(arr => arr.includes(0))) return 'Se continúa';
+        else return 'Empate';
     };
     const restartGame = () => {
         // Limpiamos tablero, llama a actualizar LocalScore
         // Si pierde, el score sería +1, o podríamos también restar -1 de score por perder?
         _board = [
-            [0,0,0],
-            [0,0,0],
-            [0,0,0]
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
         ];
     };
-    return {gameStatus, checkMove, makeMove, restartGame};
+    const movIsValid = (x, y) => {
+        return !_board[y][x];
+    }
+    return { getBoard, gameContinue, makeMove, restartGame, movIsValid };
 }
-function Player(name, symbol){
+function Player(name, symbol) {
     symbol = (symbol === "X") ? 1 : 2;
     const playerMove = () => {
         // Acá agregaríamos los datos del eventListener (?
     }
-    return {name, symbol, playerMove};
+    return { name, symbol, playerMove };
 }
 function LocalScore() {
     const updateScore = (name, result) => {
@@ -105,7 +140,24 @@ function LocalScore() {
         scores.sort((a, b) => +a - +b);
         return scores;
     };
-    return {updateScore, getScores};
+    return { updateScore, getScores };
 }
 /* Podríamos incluir la firebase para hacer scores onlines xd y hacer un leaderboard
 con login y rachas de wins(? */
+let newGame = Game();
+let IASymbol = 2;
+let setMovesUser = [{ x: 1, y: 1 }, { x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 2 }]; // Empate empezando del medio yo primero [{ x: 1, y: 1 }, { x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 2 }]
+let userSymbol = 1;
+let counter = 0;
+
+while (true) {
+    let continueUser = newGame.makeMove(setMovesUser[counter++], userSymbol);
+    console.log(newGame.getBoard(), continueUser);
+    if (continueUser != 'Se continúa') break;
+    let IAmovement = IAmakeMove(newGame.getBoard(), IASymbol);
+    let continueIA = newGame.makeMove(IAmovement.coordinates, IASymbol);
+    console.log(newGame.getBoard(), continueIA);
+    if (continueIA != 'Se continúa') break;
+}
+
+
