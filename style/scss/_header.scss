@@ -1,0 +1,58 @@
+.menu-nav{
+    height: 70px;
+    border-bottom: 2px solid $secondary-color;
+    position: relative;
+}
+.menu-logo {
+    height: 50px;
+    margin-left: 15px;
+}
+.menu-mobile {
+    height: 20px;
+    width: 20px;
+    margin-right: 35px;
+    span {
+        display: block;
+        height: 5px;
+        margin-bottom: 1px;
+        position: relative;
+        transition: all 0.2s ease-in-out;
+        transform-origin: 4px 3px;
+        &::before {
+            position: absolute;
+            top: 0px;
+            content: ' ';
+            border-bottom: 3px solid $secondary-color;
+            height: 5px;
+            width: 25px;
+        }
+    }
+    &.open {
+        > span:first-child {
+            transform: rotateZ(45deg);
+        }
+        > span:nth-child(2) {
+            opacity: 0;
+        }
+        > span:last-child {
+            transform: rotateZ(-45deg);
+        }
+    }
+}
+.leaderboard {
+    top: 70px;
+    position: absolute;
+    width: 100%;
+    background: $background-secondary-color;
+    transition: all 0.3s ease;
+    .leaderboard-container {
+        background: $background-main-color;
+        color: $main-color;
+        > .user-data {
+            @include mix-grid(2fr 1fr 2fr, 30px, "name point date");
+            justify-items: flex-start;
+            align-items: center;
+            > span {margin-left: 15px}
+        }
+    }
+}

@@ -1,27 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" sizes="32x32" href="/style/icons/web-icon/white-icon-game.png" type="image/png">
     <link rel="stylesheet" href="/style/css/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Hind&family=Palanquin+Dark&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Hind&family=Palanquin+Dark&display=swap" rel="stylesheet">
     <title>TIC TAC TOE</title>
 </head>
+
 <body>
-    <nav>
-        <h1 class="menu-logo"><img src="/style/images/placeholder-logo.png" alt="Logo"></h1>
-        <ol>
-            <li class="menu-mobile">
-                <span>-</span>
-                <span>-</span>
-                <span>-</span>
-            </li>
-        </ol>
+    <nav class="menu-nav flex flex-jc-sb flex-ai-c">
+        <div class="menu-logo"><img src="/style/images/50x50.png" alt="Logo"></div>
+        <div id ="menu-mobile" class="menu-mobile">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="leaderboard hidden" id="leaderboard">
+            <!-- Esto debería estar escondido -->
+            <p>Leaderboard</p>
+            <div class="leaderboard-container">
+                <div class="user-data"><span class="user-name">awa</span><span class="user-points">12</span><span class="user-date">18/18/18</span>
+                    <span class="user-name">awa</span><span class="user-points">12</span><span class="user-date">18/18/18</span>
+                </div>
+            </div>
+        </div>
     </nav>
+    <section class="game-body">
+        <div class="game-selection">
+            <div class="game-selection-title">Elige tu oponente</div>
+            <div class="game-option user-option">
+                <div class="img-holder"></div>
+                <div class="img-holder"></div>
+            </div>
+            <div class="game-option pc-option">
+                <div class="img-holder"></div>
+                <div class="img-holder"></div>
+            </div>
+        </div>
+
+        <div class="game-init">
+            <div class="second-player">
+                <div class="img-holder"></div>
+                <p>Nombre de player</p>
+            </div>
+            <div class="game-grid">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="first-player">
+                <div class="img-holder"></div>
+                <p>Nombre de player</p>
+            </div>
+        </div>
+    </section>
 
 
     <script src="/app/main.js"></script>
 </body>
+
 </html>

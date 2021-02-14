@@ -160,4 +160,13 @@ while (true) {
     if (continueIA != 'Se continúa') break;
 }
 
+// UI
 
++function hamburguerMenu() {
+    const menuBtn = document.getElementById('menu-mobile');
+    const leaderBoard = document.getElementById('leaderboard');
+    menuBtn.addEventListener('click', function() {
+        menuBtn.classList.toggle('open');
+        leaderBoard.classList.toggle('hidden');
+    });
+}();

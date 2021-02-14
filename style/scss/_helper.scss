@@ -1,0 +1,22 @@
+.flex {
+    display: flex;
+    &-jc-sb {
+        justify-content: space-between;
+    }
+    &-ai-c {
+        align-items: center;
+    }
+}
+.hidden {
+    visibility: hidden; 
+    opacity: 0;
+    z-index: -99;
+}
+@mixin mix-grid($colWidth, $rowsHeight, $gridAreas) {
+    display: grid;
+    grid-template-columns: $colWidth;
+    grid-template-rows: $rowsHeight;
+    grid-template-areas: $gridAreas;
+    grid-auto-rows: $rowsHeight;
+    row-gap: 5px;
+}
