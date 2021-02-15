@@ -170,3 +170,16 @@ while (true) {
         leaderBoard.classList.toggle('hidden');
     });
 }();
++function changeOponent() {
+    const oponentImg = document.getElementById('oponent-img');
+    const changeBtn = document.getElementById('oponent-img-btn');
+    changeBtn.addEventListener('click', function() {
+        if (+oponentImg.dataset.op) {
+            oponentImg.src = "/style/images/100x100-0.png";
+            oponentImg.dataset.op = "0";
+        } else {
+            oponentImg.src = "/style/images/100x100-1.png";
+            oponentImg.dataset.op = "1"; 
+        }
+    });
+}();

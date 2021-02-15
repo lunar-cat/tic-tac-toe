@@ -1,0 +1,7 @@
+.footer {
+    position: relative; // fixed aplica según el viewport por lo cual, aun cuando el body sea chiquito, lo pega al bottom 0 del viewport
+    bottom: 0px;
+    width: 100%;
+    background-color: purple;
+    height: 10vh;
+}

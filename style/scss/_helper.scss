@@ -6,17 +6,48 @@
     &-ai-c {
         align-items: center;
     }
+    &-fd-c {
+        flex-direction: column;
+    }
+    &-jc-se {
+        justify-content: space-evenly;
+    }
+    &-jc-c {
+        justify-content: center;
+    }
+    &-jc-fe {
+        justify-content: flex-end;
+    }
 }
 .hidden {
-    visibility: hidden; 
+    display: none;
     opacity: 0;
     z-index: -99;
 }
-@mixin mix-grid($colWidth, $rowsHeight, $gridAreas) {
+@mixin mix-grid($colWidth, $rowsHeight, $rowGap, $colGap) {
     display: grid;
     grid-template-columns: $colWidth;
     grid-template-rows: $rowsHeight;
-    grid-template-areas: $gridAreas;
     grid-auto-rows: $rowsHeight;
-    row-gap: 5px;
+    row-gap: $rowGap;
+    column-gap: $colGap;
+}
+.btn-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    background-color: $secondary-color;
+    color: $main-color;
+    user-select: none;
+    transition: all 0s ease;
+    cursor: pointer;
+    &:active {
+        border: 1px solid white;
+    }
+    &:hover {
+        opacity: 0.8;
+    }
+    height: 30px;
+    font-size: medium;
 }

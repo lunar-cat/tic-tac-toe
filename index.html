@@ -14,33 +14,46 @@
 <body>
     <nav class="menu-nav flex flex-jc-sb flex-ai-c">
         <div class="menu-logo"><img src="/style/images/50x50.png" alt="Logo"></div>
-        <div id ="menu-mobile" class="menu-mobile">
+        <div id="menu-mobile" class="menu-mobile flex flex-fd-c flex-jc-sb">
             <span></span><span></span><span></span>
         </div>
+
         <div class="leaderboard hidden" id="leaderboard">
             <!-- Esto debería estar escondido -->
             <p>Leaderboard</p>
             <div class="leaderboard-container">
-                <div class="user-data"><span class="user-name">awa</span><span class="user-points">12</span><span class="user-date">18/18/18</span>
-                    <span class="user-name">awa</span><span class="user-points">12</span><span class="user-date">18/18/18</span>
-                </div>
+                <span class="user-name leader-title">Nombre</span><span class="user-win leader-title">W</span><span
+                    class="user-lose leader-title">L</span><span class="user-draw leader-title">D</span><span
+                    class="user-date leader-title">Fecha</span>
+                <span class="user-name">awa</span><span class="user-win">12</span><span class="user-lose">5</span><span
+                    class="user-draw">55</span><span class="user-date">18/18/18</span>
+                <span class="user-name">awa</span><span class="user-win">12</span><span class="user-lose">5</span><span
+                    class="user-draw">55</span><span class="user-date">18/18/18</span>
             </div>
         </div>
     </nav>
+
+
     <section class="game-body">
-        <div class="game-selection">
-            <div class="game-selection-title">Elige tu oponente</div>
-            <div class="game-option user-option">
-                <div class="img-holder"></div>
-                <div class="img-holder"></div>
-            </div>
-            <div class="game-option pc-option">
-                <div class="img-holder"></div>
-                <div class="img-holder"></div>
+
+        <div class="game-selection flex flex-fd-c flex-jc-sb">
+            <div class="game-selection-title flex flex-ai-c flex-jc-c">Elige tu oponente</div>
+            <div class="game-option flex flex-ai-c flex-jc-se">
+
+                <div class="option user-option flex flex-jc-c flex-ai-c">
+                    <img class= "img-game-option" src="/style/images/100x100-0.png" alt="user">
+                </div>
+                <div class="option-vs flex flex-ai-c flex-jc-c">
+                    <div class="option-vs-text flex flex-ai-c flex-jc-c">VS</div>
+                </div>
+                <div class="option oponent-option flex flex-jc-c flex-ai-c">
+                    <img data-op="0" id="oponent-img" class= "img-game-option" src="/style/images/100x100-0.png" alt="user-oponent">
+                    <div id="oponent-img-btn" class="game-option-btn btn-main">CAMBIAR</div>
+                </div>
             </div>
         </div>
 
-        <div class="game-init">
+        <div class="game-init hidden">
             <div class="second-player">
                 <div class="img-holder"></div>
                 <p>Nombre de player</p>
@@ -63,7 +76,7 @@
         </div>
     </section>
 
-
+    <footer class="footer">hecho con uwu por uwu</footer>
     <script src="/app/main.js"></script>
 </body>
 

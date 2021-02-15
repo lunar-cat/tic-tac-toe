@@ -1,41 +1,46 @@
 .menu-nav{
-    height: 70px;
-    border-bottom: 2px solid $secondary-color;
+    height: 10vh;
+    border-bottom: 5px solid $secondary-color;
     position: relative;
+    background-color: $background-main-color;
 }
 .menu-logo {
     height: 50px;
     margin-left: 15px;
 }
 .menu-mobile {
-    height: 20px;
-    width: 20px;
+    width: 34px; // 17 px es el primer valor que nos funciona // también 34 y abajo 29 en height
     margin-right: 35px;
+    height: 29px;
+    &:hover {
+        opacity: 0.6;
+        transition: opacity 0.3s;
+    }
     span {
         display: block;
+        width: 100%;
         height: 5px;
-        margin-bottom: 1px;
         position: relative;
         transition: all 0.2s ease-in-out;
-        transform-origin: 4px 3px;
+        transform-origin: left;
         &::before {
             position: absolute;
             top: 0px;
             content: ' ';
-            border-bottom: 3px solid $secondary-color;
+            background-color: $main-color;
             height: 5px;
-            width: 25px;
+            width: 100%;
         }
     }
     &.open {
         > span:first-child {
-            transform: rotateZ(45deg);
+            transform: rotate(45deg);
         }
         > span:nth-child(2) {
             opacity: 0;
         }
         > span:last-child {
-            transform: rotateZ(-45deg);
+            transform: rotate(-45deg);
         }
     }
 }
@@ -45,14 +50,23 @@
     width: 100%;
     background: $background-secondary-color;
     transition: all 0.3s ease;
+    z-index: 99;
     .leaderboard-container {
-        background: $background-main-color;
         color: $main-color;
-        > .user-data {
-            @include mix-grid(2fr 1fr 2fr, 30px, "name point date");
-            justify-items: flex-start;
-            align-items: center;
-            > span {margin-left: 15px}
+        @include mix-grid(2fr 1fr 1fr 1fr 2fr, 30px, 3px, 3px); // cols width & rows height, rowGap & colGap
+        justify-items: flex-start;
+        align-items: center;
+        > span {
+            padding-top: 5px;
+            padding-left: 15px;
+            height: 100%;
+            width: 100%;
+            background-color: $background-main-color;
+            &.leader-title {
+                color: $secondary-color;
+                background: $background-secondary-color;
+                font-weight: bold;
+            }
         }
     }
 }

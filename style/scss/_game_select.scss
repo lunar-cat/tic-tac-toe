@@ -1,0 +1,80 @@
+.main-game {
+    background-color: $background-secondary-color;
+    color: $secondary-color;
+    font-weight: 600;
+}
+.game-selection {
+    height: 80vh;
+}
+.game-selection-title {
+    @extend .main-game;
+    font-size: 2rem;
+    height: 20%;
+}
+.game-option {
+    border-top: 5px solid $secondary-color;
+    position: relative;
+    height: 80%;
+}
+.option-vs {
+    @extend .main-game;
+    font-size: 1rem;
+    position: absolute;
+    z-index: 2;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(to right, rgb(88, 198, 212) 50% ,  rgb(113, 219, 113) 50% 100%);
+    animation: fadeIn 0.5s;
+    transform: rotate(-30deg);
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: scale(-0.2) rotate(230deg);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) rotate(-30deg);
+        }
+    }
+}
+.option-vs-text {
+    font-size: 30px;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background-color: white;
+    color: $secondary-color;
+    transform: rotate(30deg);
+}
+.img-game-option {
+    width: 100px;
+    height: 100px;
+}
+.option {
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+.user-option {
+    background-color: rgb(113, 219, 113);
+    animation: initLeft 0.5s;
+    @keyframes initLeft {
+        0% {left: -30px;}
+        100% {left: 0px;}
+    }
+}
+.oponent-option {
+    background-color: rgb(88, 198, 212);
+    animation: initRight 0.5s;
+    @keyframes initRight {
+        0% {left: 30px;}
+        100% {left: 0px;}
+    }
+}
+.game-option-btn {
+    bottom: 0px;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+}
