@@ -6,6 +6,12 @@
     &-ai-c {
         align-items: center;
     }
+    &-ai-fs {
+        align-items: flex-start;
+    }
+    &-ai-fe {
+        align-items: flex-end;
+    }
     &-fd-c {
         flex-direction: column;
     }
@@ -17,6 +23,9 @@
     }
     &-jc-fe {
         justify-content: flex-end;
+    }
+    &-fd-cr {
+        flex-direction: column-reverse;
     }
 }
 .hidden {
@@ -36,7 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 2px;
+    border-radius: 5px;
     background-color: $secondary-color;
     color: $main-color;
     user-select: none;

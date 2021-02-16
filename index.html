@@ -13,7 +13,7 @@
 
 <body>
     <nav class="menu-nav flex flex-jc-sb flex-ai-c">
-        <div class="menu-logo"><img src="/style/images/50x50.png" alt="Logo"></div>
+        <div class="menu-logo"><img id="menu-logo" src="/style/icons/web-icon/game-white.svg" alt="Logo"></div>
         <div id="menu-mobile" class="menu-mobile flex flex-fd-c flex-jc-sb">
             <span></span><span></span><span></span>
         </div>
@@ -38,20 +38,40 @@
 
         <div class="game-selection flex flex-fd-c flex-jc-sb">
             <div class="game-selection-title flex flex-ai-c flex-jc-c">Elige tu oponente</div>
+            <div class="user-options-names flex flex-ai-fe flex-jc-se">
+                <div id="player-name" class="option-name user-name">JUGADOR 1</div>
+                <div id="oponent-name" class="option-name oponent-name">IA</div>
+            </div>
             <div class="game-option flex flex-ai-c flex-jc-se">
 
                 <div class="option user-option flex flex-jc-c flex-ai-c">
-                    <img class= "img-game-option" src="/style/images/100x100-0.png" alt="user">
+                    <img class= "img-game-option" src="/style/icons/web-icon/face-black.svg" alt="user">
+                    <div id="user-img-btn" class="game-option-btn btn-main">CAMBIAR NOMBRE</div>
                 </div>
                 <div class="option-vs flex flex-ai-c flex-jc-c">
                     <div class="option-vs-text flex flex-ai-c flex-jc-c">VS</div>
                 </div>
                 <div class="option oponent-option flex flex-jc-c flex-ai-c">
-                    <img data-op="0" id="oponent-img" class= "img-game-option" src="/style/images/100x100-0.png" alt="user-oponent">
-                    <div id="oponent-img-btn" class="game-option-btn btn-main">CAMBIAR</div>
+                    <img data-op="0" id="oponent-img" class="img-game-option" src="/style/icons/web-icon/android-black.svg" alt="user-oponent">
+                    <div id="oponent-img-btn" class="game-option-btn btn-main">CAMBIAR OPONENTE</div>
                 </div>
             </div>
         </div>
+
+        <dialog class="dialog-change-name flex flex-ai-c flex-fd-c flex-jc-se hidden" id="change-name-dialog">
+
+            <div class="modal-input-container flex flex-fd-cr flex-ai-fs flex-jc-se">
+                <input type="text" id="change-name-input" placeholder="Elige tu nombre" required maxlength="20">
+                <label for="name" class="label-change-name">Elige tu nombre</label>
+            </div>
+            
+            <div class="modal-options flex flex-jc-sb flex-ai-c">
+                <img class="icon-dialog" src="style/icons/web-icon/close-black.svg" alt="close-dialog">
+                <img id="change-name-btn" class="icon-dialog" src="style/icons/web-icon/check-black.svg" alt="change-name">
+            </div>
+        </dialog>
+
+
 
         <div class="game-init hidden">
             <div class="second-player">

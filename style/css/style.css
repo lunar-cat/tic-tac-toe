@@ -14,7 +14,7 @@ body, h1 {
   margin: 0;
   padding: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
 }
 
 a {
@@ -43,6 +43,18 @@ li {
           align-items: center;
 }
 
+.flex-ai-fs {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.flex-ai-fe {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
 .flex-fd-c {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -68,6 +80,13 @@ li {
           justify-content: flex-end;
 }
 
+.flex-fd-cr {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
 .hidden {
   display: none;
   opacity: 0;
@@ -84,7 +103,7 @@ li {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  border-radius: 2px;
+  border-radius: 5px;
   background-color: #468e91;
   color: white;
   -webkit-user-select: none;
@@ -108,19 +127,26 @@ li {
 
 .menu-nav {
   height: 10vh;
-  border-bottom: 5px solid #468e91;
   position: relative;
   background-color: #468e91;
+  -webkit-box-shadow: 0px 3px #376e70;
+          box-shadow: 0px 3px #376e70;
 }
 
 .menu-logo {
-  height: 50px;
-  margin-left: 15px;
+  height: 65px;
+  width: 65px;
+  margin-left: 10%;
+}
+
+.menu-logo > #menu-logo {
+  width: 100%;
+  height: 100%;
 }
 
 .menu-mobile {
   width: 34px;
-  margin-right: 35px;
+  margin-right: 10%;
   height: 29px;
 }
 
@@ -165,7 +191,7 @@ li {
 }
 
 .leaderboard {
-  top: 70px;
+  top: 10vh;
   position: absolute;
   width: 100%;
   background: white;
@@ -218,13 +244,12 @@ li {
 
 .game-selection-title {
   font-size: 2rem;
-  height: 20%;
+  height: 15%;
 }
 
 .game-option {
-  border-top: 5px solid #468e91;
   position: relative;
-  height: 80%;
+  height: 70%;
 }
 
 .option-vs {
@@ -234,8 +259,8 @@ li {
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #58c6d4), color-stop(50%, #71db71));
-  background: linear-gradient(to right, #58c6d4 50%, #71db71 50% 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #e0ff73), color-stop(50%, #465aa8));
+  background: linear-gradient(to right, #e0ff73 50%, #465aa8 50% 100%);
   -webkit-animation: fadeIn 0.5s;
           animation: fadeIn 0.5s;
   -webkit-transform: rotate(-30deg);
@@ -287,11 +312,14 @@ li {
 .option {
   position: relative;
   width: 50%;
-  height: 100%;
+  height: 60%;
+  border-radius: 15px;
+  max-width: 320px;
+  min-height: 200px;
 }
 
 .user-option {
-  background-color: #71db71;
+  background-color: #465aa8;
   -webkit-animation: initLeft 0.5s;
           animation: initLeft 0.5s;
 }
@@ -315,7 +343,7 @@ li {
 }
 
 .oponent-option {
-  background-color: #58c6d4;
+  background-color: #e0ff73;
   -webkit-animation: initRight 0.5s;
           animation: initRight 0.5s;
 }
@@ -339,10 +367,127 @@ li {
 }
 
 .game-option-btn {
-  bottom: 0px;
+  bottom: -35px;
   position: absolute;
-  width: 100%;
+  width: 98%;
   z-index: 2;
+}
+
+.user-options-names {
+  height: 15%;
+}
+
+.option-name {
+  color: #468e91;
+  font-weight: 600;
+  font-size: 1.7rem;
+  width: 50%;
+  max-width: 320px;
+  text-align: center;
+}
+
+.dialog-change-name {
+  height: 200px;
+  border: 2px solid #468e91;
+  border-radius: 10px;
+  padding: 0px;
+  width: 320px;
+}
+
+.dialog-change-name::-webkit-backdrop {
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+
+.dialog-change-name::backdrop {
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}
+
+.dialog-change-name .modal-input-container {
+  height: 60%;
+  width: 100%;
+  padding: 0px 12%;
+  position: relative;
+}
+
+.dialog-change-name .modal-input-container .label-change-name {
+  font-weight: 500;
+  color: #468e91;
+  z-index: 0;
+  position: relative;
+  top: 45%;
+  opacity: 0;
+  margin-left: 10px;
+}
+
+.dialog-change-name #change-name-input {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  padding-left: 8px;
+  outline: none;
+}
+
+.dialog-change-name #change-name-input:invalid {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: 2px solid red;
+}
+
+.dialog-change-name #change-name-input:valid {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  box-shadow: none;
+  border: 2px solid #468e91;
+}
+
+.dialog-change-name #change-name-input:focus + .label-change-name {
+  z-index: 1;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  opacity: 1;
+  top: 0%;
+}
+
+.dialog-change-name #change-name-input:focus::-webkit-input-placeholder {
+  opacity: 0;
+}
+
+.dialog-change-name #change-name-input:focus:-ms-input-placeholder {
+  opacity: 0;
+}
+
+.dialog-change-name #change-name-input:focus::-ms-input-placeholder {
+  opacity: 0;
+}
+
+.dialog-change-name #change-name-input:focus::placeholder {
+  opacity: 0;
+}
+
+.dialog-change-name .modal-options {
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  height: 40%;
+  width: 100%;
+  padding: 0px 10%;
+}
+
+.dialog-change-name .modal-options .icon-dialog {
+  height: 40px;
+  opacity: 0.6;
+}
+
+.dialog-change-name .modal-options .icon-dialog:hover {
+  opacity: 1;
+}
+
+.dialog-change-name .modal-options .icon-dialog:hover:active {
+  border: 2px solid #468e91;
 }
 
 .footer {

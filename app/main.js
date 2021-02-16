@@ -173,13 +173,41 @@ while (true) {
 +function changeOponent() {
     const oponentImg = document.getElementById('oponent-img');
     const changeBtn = document.getElementById('oponent-img-btn');
+    const oponentName = document.getElementById('oponent-name');
+
     changeBtn.addEventListener('click', function() {
         if (+oponentImg.dataset.op) {
-            oponentImg.src = "/style/images/100x100-0.png";
+            oponentImg.src = "/style/icons/web-icon/android-black.svg";
             oponentImg.dataset.op = "0";
+            oponentName.textContent = "IA";
         } else {
-            oponentImg.src = "/style/images/100x100-1.png";
-            oponentImg.dataset.op = "1"; 
+            oponentImg.src = "/style/icons/web-icon/face-black.svg";
+            oponentImg.dataset.op = "1";  
+            oponentName.textContent = "JUGADOR 2";
         }
     });
+}();
++function changeName(){
+    const saveChangeName = document.getElementById('change-name-btn');
+    const nameInput = document.getElementById('change-name-input');
+    const closeDialog = document.getElementsByClassName('icon-dialog');
+    const playerName = document.getElementById('player-name');
+    const changeBtn = document.getElementById('user-img-btn');
+    const dialogHTML = document.getElementById('change-name-dialog');
+    dialogHTML.addEventListener('keypress', function(event) {
+        if (event.key === "Enter") saveChangeName.click();
+    });
+    saveChangeName.addEventListener('click', function() {
+        const newName = nameInput.value.slice(0,20);
+        playerName.textContent = newName;
+    });
+    changeBtn.addEventListener('click', function() {
+        dialogHTML.classList.remove('hidden');
+        nameInput.value = '';
+        dialogHTML.showModal();
+    });
+    Array.from(closeDialog).forEach(btn => btn.addEventListener('click', function() {
+        dialogHTML.classList.add('hidden');
+        dialogHTML.close()
+    }));
 }();

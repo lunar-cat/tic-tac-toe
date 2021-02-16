@@ -1,16 +1,21 @@
 .menu-nav{
     height: 10vh;
-    border-bottom: 5px solid $secondary-color;
     position: relative;
     background-color: $background-main-color;
+    box-shadow: 0px 3px #376e70;
 }
 .menu-logo {
-    height: 50px;
-    margin-left: 15px;
+    height: 65px;
+    width: 65px;
+    margin-left: 10%;
+    > #menu-logo {
+        width: 100%;
+        height: 100%;
+    }
 }
 .menu-mobile {
     width: 34px; // 17 px es el primer valor que nos funciona // también 34 y abajo 29 en height
-    margin-right: 35px;
+    margin-right: 10%;
     height: 29px;
     &:hover {
         opacity: 0.6;
@@ -45,7 +50,7 @@
     }
 }
 .leaderboard {
-    top: 70px;
+    top: 10vh;
     position: absolute;
     width: 100%;
     background: $background-secondary-color;
