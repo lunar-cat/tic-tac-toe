@@ -11,10 +11,18 @@ body, h1 {
     padding: 0;
     width: 100vw;
     height: 100%;
+    min-width: 360px;
 }
 a {
     text-decoration: none;
 }
 li {
     list-style: none;
+}
+.game-body {
+    height: 85vh;
+}
+p {
+    margin: 0px;
+    padding: 0px;
 }

@@ -4,7 +4,7 @@
     font-weight: 600;
 }
 .game-selection {
-    height: 80vh;
+    height: 100%;
 }
 .game-selection-title {
     @extend .main-game;
@@ -23,7 +23,8 @@
     width: 65px;
     height: 65px;
     border-radius: 50%;
-    background: linear-gradient(to right, #e0ff73 50% ,  #465aa8 50% 100%);
+    background: linear-gradient(to right, #e4ff89 50% ,  #abd4ff 50% 100%);
+    border: 2px solid $secondary-color;
     animation: fadeIn 0.5s;
     transform: rotate(-30deg);
     @keyframes fadeIn {
@@ -35,6 +36,24 @@
             opacity: 1;
             transform: scale(1) rotate(-30deg);
         }
+    }
+}
+.start-btn {
+    @extend .main-game;
+    width: 100px;
+    height: 30px;
+    position: absolute;
+    z-index: 3;
+    top: 5%; 
+    border: 2px solid #376e70;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    color: #376e70;
+    &:hover {opacity: 0.7;}
+    &:active {opacity: 1;}
+    > #start-icon {
+        width: 20px;
     }
 }
 .option-vs-text {
@@ -59,19 +78,27 @@
     min-height: 200px;
 }
 .user-option {
-    background-color: #465aa8;
+    background-color: #abd4ff; //#abd4ff o #465aa8
     animation: initLeft 0.5s;
     @keyframes initLeft {
-        0% {left: -30px;}
-        100% {left: 0px;}
+        0% {
+            top: -30px;
+        }
+        100% {
+            top: 0px;
+        }
     }
 }
 .oponent-option {
-    background-color: #e0ff73;
+    background-color: #e4ff89; //#e4ff89 o #e0ff73
     animation: initRight 0.5s;
     @keyframes initRight {
-        0% {left: 30px;}
-        100% {left: 0px;}
+        0% {
+            top: 30px;
+        }
+        100% {
+            top: 0px;
+        }
     }
 }
 .game-option-btn {
@@ -82,6 +109,13 @@
 }
 .user-options-names {
     height: 15%;
+    > .user-name {
+        border-bottom: 2px solid #abd4ff;
+        overflow: hidden; // tengo que revisar como hacer que el texto no se ponga en dos filas al achicar la pantalla
+    }
+    > .oponent-name {
+        border-bottom: 2px solid #e4ff89;
+    }
 }
 .option-name {
     color: $secondary-color;
@@ -94,11 +128,11 @@
 
 .dialog-change-name {
     &::backdrop {backdrop-filter: blur(5px);}
-    height: 200px;
+    height: 150px;
     border: 2px solid $secondary-color;
     border-radius: 10px;
     padding: 0px;
-    width: 320px;
+    width: 200px;
     .modal-input-container {
         height: 60%;
         width: 100%;
@@ -109,7 +143,7 @@
             color: $secondary-color;
             z-index: 0;
             position: relative;
-            top: 45%;
+            top: 50%;
             opacity: 0;
             margin-left: 10px;
         }
@@ -120,6 +154,7 @@
         z-index: 2;
         padding-left: 8px;
         outline: none;
+        border-radius: 5px;
         &:invalid {box-shadow: none; border: 2px solid red}
         &:valid {box-shadow: none; box-shadow: none; border: 2px solid $secondary-color}
         &:focus {
@@ -133,12 +168,12 @@
         }
     } 
     .modal-options {
-        cursor: pointer;
         user-select: none;
         height: 40%;
         width: 100%;
         padding: 0px 10%;
         .icon-dialog {
+            cursor: pointer;
             height: 40px;
             opacity: 0.6;
             &:hover {

@@ -211,3 +211,13 @@ while (true) {
         dialogHTML.close()
     }));
 }();
++function startGame(){
+    const startBtn = document.getElementById('start-btn');
+    const gameBodyContainer = document.getElementById('game-body-container');
+    const gameStartContainer = document.getElementById('game-start-container');
+
+    startBtn.addEventListener('click', function() {
+        gameBodyContainer.classList.add('hidden');
+        gameStartContainer.classList.remove('hidden');
+    }); 
+}();

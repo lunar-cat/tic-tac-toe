@@ -15,6 +15,7 @@ body, h1 {
   padding: 0;
   width: 100vw;
   height: 100%;
+  min-width: 360px;
 }
 
 a {
@@ -23,6 +24,15 @@ a {
 
 li {
   list-style: none;
+}
+
+.game-body {
+  height: 85vh;
+}
+
+p {
+  margin: 0px;
+  padding: 0px;
 }
 
 .flex {
@@ -104,7 +114,7 @@ li {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 5px;
-  background-color: #468e91;
+  background-color: #376e70;
   color: white;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -113,6 +123,7 @@ li {
   -webkit-transition: all 0s ease;
   transition: all 0s ease;
   cursor: pointer;
+  font-weight: bold;
   height: 30px;
   font-size: medium;
 }
@@ -137,11 +148,18 @@ li {
   height: 65px;
   width: 65px;
   margin-left: 10%;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .menu-logo > #menu-logo {
   width: 100%;
   height: 100%;
+}
+
+.menu-logo:hover {
+  opacity: 0.7;
 }
 
 .menu-mobile {
@@ -232,14 +250,14 @@ li {
   font-weight: bold;
 }
 
-.main-game, .game-selection-title, .option-vs {
+.main-game, .game-selection-title, .option-vs, .start-btn {
   background-color: white;
   color: #468e91;
   font-weight: 600;
 }
 
 .game-selection {
-  height: 80vh;
+  height: 100%;
 }
 
 .game-selection-title {
@@ -259,8 +277,9 @@ li {
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #e0ff73), color-stop(50%, #465aa8));
-  background: linear-gradient(to right, #e0ff73 50%, #465aa8 50% 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #e4ff89), color-stop(50%, #abd4ff));
+  background: linear-gradient(to right, #e4ff89 50%, #abd4ff 50% 100%);
+  border: 2px solid #468e91;
   -webkit-animation: fadeIn 0.5s;
           animation: fadeIn 0.5s;
   -webkit-transform: rotate(-30deg);
@@ -293,6 +312,34 @@ li {
   }
 }
 
+.start-btn {
+  width: 100px;
+  height: 30px;
+  position: absolute;
+  z-index: 3;
+  top: 5%;
+  border: 2px solid #376e70;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #376e70;
+}
+
+.start-btn:hover {
+  opacity: 0.7;
+}
+
+.start-btn:active {
+  opacity: 1;
+}
+
+.start-btn > #start-icon {
+  width: 20px;
+}
+
 .option-vs-text {
   font-size: 30px;
   width: 80%;
@@ -319,50 +366,50 @@ li {
 }
 
 .user-option {
-  background-color: #465aa8;
+  background-color: #abd4ff;
   -webkit-animation: initLeft 0.5s;
           animation: initLeft 0.5s;
 }
 
 @-webkit-keyframes initLeft {
   0% {
-    left: -30px;
+    top: -30px;
   }
   100% {
-    left: 0px;
+    top: 0px;
   }
 }
 
 @keyframes initLeft {
   0% {
-    left: -30px;
+    top: -30px;
   }
   100% {
-    left: 0px;
+    top: 0px;
   }
 }
 
 .oponent-option {
-  background-color: #e0ff73;
+  background-color: #e4ff89;
   -webkit-animation: initRight 0.5s;
           animation: initRight 0.5s;
 }
 
 @-webkit-keyframes initRight {
   0% {
-    left: 30px;
+    top: 30px;
   }
   100% {
-    left: 0px;
+    top: 0px;
   }
 }
 
 @keyframes initRight {
   0% {
-    left: 30px;
+    top: 30px;
   }
   100% {
-    left: 0px;
+    top: 0px;
   }
 }
 
@@ -377,6 +424,15 @@ li {
   height: 15%;
 }
 
+.user-options-names > .user-name {
+  border-bottom: 2px solid #abd4ff;
+  overflow: hidden;
+}
+
+.user-options-names > .oponent-name {
+  border-bottom: 2px solid #e4ff89;
+}
+
 .option-name {
   color: #468e91;
   font-weight: 600;
@@ -387,11 +443,11 @@ li {
 }
 
 .dialog-change-name {
-  height: 200px;
+  height: 150px;
   border: 2px solid #468e91;
   border-radius: 10px;
   padding: 0px;
-  width: 320px;
+  width: 200px;
 }
 
 .dialog-change-name::-webkit-backdrop {
@@ -416,7 +472,7 @@ li {
   color: #468e91;
   z-index: 0;
   position: relative;
-  top: 45%;
+  top: 50%;
   opacity: 0;
   margin-left: 10px;
 }
@@ -427,6 +483,7 @@ li {
   z-index: 2;
   padding-left: 8px;
   outline: none;
+  border-radius: 5px;
 }
 
 .dialog-change-name #change-name-input:invalid {
@@ -467,7 +524,6 @@ li {
 }
 
 .dialog-change-name .modal-options {
-  cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -478,6 +534,7 @@ li {
 }
 
 .dialog-change-name .modal-options .icon-dialog {
+  cursor: pointer;
   height: 40px;
   opacity: 0.6;
 }
@@ -490,11 +547,15 @@ li {
   border: 2px solid #468e91;
 }
 
+.game-start-container {
+  height: 85vh;
+}
+
 .footer {
   position: relative;
   bottom: 0px;
   width: 100%;
-  background-color: purple;
-  height: 10vh;
+  background-color: #caa0ca;
+  height: 5vh;
 }
 /*# sourceMappingURL=style.css.map */
