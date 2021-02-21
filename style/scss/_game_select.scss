@@ -40,8 +40,10 @@
 }
 .start-btn {
     @extend .main-game;
-    width: 100px;
-    height: 30px;
+    min-width: 100px;
+    min-height: 47px;
+    width: 20%;
+    height: 12%;
     position: absolute;
     z-index: 3;
     top: 5%; 

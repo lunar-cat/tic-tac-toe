@@ -38,7 +38,7 @@
         <div id="game-selection-container" class="game-selection flex flex-fd-c flex-jc-sb">
             <div class="game-selection-title flex flex-ai-c flex-jc-c">Elige tu oponente</div>
             <div class="user-options-names flex flex-ai-fe flex-jc-se">
-                <div id="player-name" class="option-name user-name">JUGADOR 1</div>
+                <div id="player-name" class="option-name user-name" data-name-user="JUGADOR 1">JUGADOR 1</div>
                 <div id="oponent-name" class="option-name oponent-name">IA</div>
             </div>
             <div class="game-option flex flex-ai-c flex-jc-se">
@@ -74,21 +74,27 @@
         </dialog>
     </section>
     <section id="game-start-container" class="game-start-container hidden">
-        <div class="game-start-title">Tu turno</div>
-        <div class="game-grid">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="game-start-title flex flex-ai-c flex-jc-c">TURNO OPONENTE</div>
+
+        <div class="grid-oponent-name grid-name flex flex-ai-c">
+            <div class="grid-oponent-name-txt grid-name-txt">IA</div>
         </div>
+        <div class="game-grid-container flex flex-ai-c flex-jc-c">
+            <div class="game-grid">
+                <span class="grid-cell" data-grid="1"></span><span class="grid-cell" data-grid="2"></span><span
+                    class="grid-cell" data-grid="3"></span><span class="grid-cell" data-grid="4"></span><span
+                    class="grid-cell" data-grid="5"></span><span class="grid-cell" data-grid="6"></span><span
+                    class="grid-cell" data-grid="7"></span><span class="grid-cell" data-grid="8"></span><span
+                    class="grid-cell" data-grid="9"></span>
+            </div>
+        </div>
+        <div class="grid-user-name grid-name flex flex-ai-c flex-jc-fe">
+            <div id="grid-user-name" class="grid-user-name-txt grid-name-txt">JUGADOR 1</div>
+        </div>
+
     </section>
 
-    <footer class="footer">See this project on <a target="_blank" href="https://github.com/lunar-cat/tic-tac-toe">Github</a></footer>
+    <footer class="footer">See this project on</footer>
     <!--Acá podríamos agregar algo así como made by <a>yo</a> y apuntar al github-->
     <script src="/app/main.js"></script>
 </body>

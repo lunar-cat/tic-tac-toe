@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html {
   font-size: 100%;
   -webkit-box-sizing: border-box;
@@ -313,8 +314,10 @@ p {
 }
 
 .start-btn {
-  width: 100px;
-  height: 30px;
+  min-width: 100px;
+  min-height: 47px;
+  width: 20%;
+  height: 12%;
   position: absolute;
   z-index: 3;
   top: 5%;
@@ -549,8 +552,102 @@ p {
 
 .game-start-container {
   height: 85vh;
+  position: relative;
 }
 
+.game-start-container > .game-start-title {
+  font-size: 2rem;
+  height: 10%;
+  color: #468e91;
+  font-weight: 600;
+  position: relative;
+}
+
+.game-start-container > .grid-name {
+  padding: 1% 5%;
+  height: 15%;
+  color: #376e70;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.game-start-container > .grid-name > .grid-name-txt {
+  width: auto;
+  border-radius: 10px;
+  position: relative;
+}
+
+.game-start-container > .grid-name > .grid-name-txt.disabled {
+  opacity: 0.4;
+  font-size: 1.5rem;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.game-start-container > .grid-name > .grid-name-txt.active {
+  font-size: 2.5rem;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.game-start-container > .grid-name > .grid-user-name-txt {
+  background-color: #abd4ff;
+}
+
+.game-start-container > .grid-name > .grid-oponent-name-txt {
+  background-color: #e4ff89;
+}
+
+.game-start-container > .game-grid-container {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  height: 60%;
+}
+
+.game-start-container > .game-grid-container > .game-grid {
+  height: 350px;
+  width: 350px;
+  background-color: #468e91;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: auto;
+      grid-template-columns: auto;
+  -ms-grid-rows: auto;
+      grid-template-rows: auto;
+  grid-auto-rows: auto;
+  row-gap: 10px;
+  -webkit-column-gap: 10px;
+          column-gap: 10px;
+      grid-template-areas: ". . ." ". . ." ". . .";
+}
+
+.game-start-container > .game-grid-container > .game-grid > span {
+  background-color: white;
+}
+
+.game-start-container > .game-grid-container > .game-grid .clicked-cell-user {
+  width: 100%;
+  height: 100%;
+  background-image: url(/style/icons/web-icon/cross-black.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.game-start-container > .game-grid-container > .game-grid .clicked-cell-oponent {
+  width: 100%;
+  height: 100%;
+  background-image: url(/style/icons/web-icon/circle-black.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/* Deberíamos poner, que cuando se juega contra el pc, el otro valor esté al revés
+así puede jugar cada uno en un lado de la pantalla */
 .footer {
   position: relative;
   bottom: 0px;

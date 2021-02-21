@@ -165,7 +165,7 @@ while (true) {
 +function hamburguerMenu() {
     const menuBtn = document.getElementById('menu-mobile');
     const leaderBoard = document.getElementById('leaderboard');
-    menuBtn.addEventListener('click', function() {
+    menuBtn.addEventListener('click', function () {
         menuBtn.classList.toggle('open');
         leaderBoard.classList.toggle('hidden');
     });
@@ -175,49 +175,76 @@ while (true) {
     const changeBtn = document.getElementById('oponent-img-btn');
     const oponentName = document.getElementById('oponent-name');
 
-    changeBtn.addEventListener('click', function() {
+    changeBtn.addEventListener('click', function () {
         if (+oponentImg.dataset.op) {
             oponentImg.src = "/style/icons/web-icon/android-black.svg";
             oponentImg.dataset.op = "0";
             oponentName.textContent = "IA";
         } else {
             oponentImg.src = "/style/icons/web-icon/face-black.svg";
-            oponentImg.dataset.op = "1";  
+            oponentImg.dataset.op = "1";
             oponentName.textContent = "JUGADOR 2";
         }
     });
 }();
-+function changeName(){
++function changeName() {
     const saveChangeName = document.getElementById('change-name-btn');
     const nameInput = document.getElementById('change-name-input');
     const closeDialog = document.getElementsByClassName('icon-dialog');
     const playerName = document.getElementById('player-name');
     const changeBtn = document.getElementById('user-img-btn');
     const dialogHTML = document.getElementById('change-name-dialog');
-    dialogHTML.addEventListener('keypress', function(event) {
+    dialogHTML.addEventListener('keypress', function (event) {
         if (event.key === "Enter") saveChangeName.click();
     });
-    saveChangeName.addEventListener('click', function() {
-        const newName = nameInput.value.slice(0,20);
+    saveChangeName.addEventListener('click', function () {
+        const newName = nameInput.value.slice(0, 20);
         playerName.textContent = newName;
+        playerName.dataset.nameUser = newName;
     });
-    changeBtn.addEventListener('click', function() {
+    changeBtn.addEventListener('click', function () {
         dialogHTML.classList.remove('hidden');
         nameInput.value = '';
         dialogHTML.showModal();
     });
-    Array.from(closeDialog).forEach(btn => btn.addEventListener('click', function() {
+    Array.from(closeDialog).forEach(btn => btn.addEventListener('click', function () {
         dialogHTML.classList.add('hidden');
         dialogHTML.close()
     }));
 }();
-+function startGame(){
++function startGame() {
     const startBtn = document.getElementById('start-btn');
     const gameBodyContainer = document.getElementById('game-body-container');
     const gameStartContainer = document.getElementById('game-start-container');
+    const previousPlayerName = document.getElementById('player-name');
+    const gridUserName = document.getElementById('grid-user-name');
 
-    startBtn.addEventListener('click', function() {
+    startBtn.addEventListener('click', function () {
         gameBodyContainer.classList.add('hidden');
         gameStartContainer.classList.remove('hidden');
-    }); 
+        gridUserName.textContent = previousPlayerName.dataset.nameUser;
+    });
+    
 }();
++function gridGameClickVisual() { /* Al sacar el evento dentro del eventListener en sí mismo, luego debemos sacar este IIFE y ponerla dentro de otra, que se llame en cada new game */
+    const gridSpans = document.getElementsByClassName('grid-cell');
+    const gridCellClasses = {
+        "-1": "clicked-cell-oponent",
+        "1": "clicked-cell-user",
+        "_index": -1,
+        getClass(){
+            const currentClass = this._index *= -1;
+            return this[currentClass];
+        }
+    }
+    Array.from(gridSpans).forEach(span => {
+        span.addEventListener('click', function handleClick(event) {
+            const gridCellPosition = event.target.dataset.grid; // esta es la posición, el dato del data-grid en los span
+            const currentClass = gridCellClasses.getClass();
+            span.classList.add(currentClass);
+            span.removeEventListener('click', handleClick);
+        });
+    });
+}();
+
+
