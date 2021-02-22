@@ -23,12 +23,12 @@ let newGame = Game();
                 oponentName.textContent = "IA HARD";
                 break;
             case 1:
-                oponentImg.src = "/style/icons/web-icon/face-black.svg";
+                oponentImg.src = "style/icons/web-icon/face-black.svg";
                 oponentImg.dataset.op = "2";
                 oponentName.textContent = "JUGADOR 2";
                 break;
             case 2:
-                oponentImg.src = "/style/icons/web-icon/android-black.svg";
+                oponentImg.src = "style/icons/web-icon/android-black.svg";
                 oponentImg.dataset.op = "0";
                 oponentName.textContent = "IA EASY";
                 break;
@@ -299,7 +299,13 @@ function getDiagonal(x, y, board) {
 function checkSetMoves(set, x, y, IASymbol) {
     let valueMove = 0;
     let userSymbol = 1;
-    let position = (set[1] === 'row') ? x : y;
+    let position = (set[1] === 'row') 
+        ? x 
+        : (set[1] === 'col')
+        ? y
+        : (y === 1)
+        ? 1
+        : 0;
 
     let testWinOrLose = set[0].slice();
     testWinOrLose[position] = IASymbol;

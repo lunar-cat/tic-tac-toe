@@ -633,7 +633,7 @@ p {
 .game-start-container > .game-grid-container > .game-grid .clicked-cell-user {
   width: 100%;
   height: 100%;
-  background-image: url(/style/icons/web-icon/cross-black.svg);
+  background-image: url(style/icons/web-icon/cross-black.svg);
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -641,7 +641,7 @@ p {
 .game-start-container > .game-grid-container > .game-grid .clicked-cell-oponent {
   width: 100%;
   height: 100%;
-  background-image: url(/style/icons/web-icon/circle-black.svg);
+  background-image: url(style/icons/web-icon/circle-black.svg);
   background-repeat: no-repeat;
   background-size: contain;
 }
