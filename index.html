@@ -39,7 +39,7 @@
             <div class="game-selection-title flex flex-ai-c flex-jc-c">Elige tu oponente</div>
             <div class="user-options-names flex flex-ai-fe flex-jc-se">
                 <div id="player-name" class="option-name user-name" data-name-user="JUGADOR 1">JUGADOR 1</div>
-                <div id="oponent-name" class="option-name oponent-name">IA</div>
+                <div id="oponent-name" class="option-name oponent-name">IA EASY</div>
             </div>
             <div class="game-option flex flex-ai-c flex-jc-se">
                 <div class="option user-option flex flex-jc-c flex-ai-c">
@@ -62,37 +62,48 @@
 
         <dialog class="dialog-change-name flex flex-ai-c flex-fd-c flex-jc-se hidden" id="change-name-dialog">
             <div class="modal-input-container flex flex-fd-cr flex-ai-fs flex-jc-se">
-                <input type="text" id="change-name-input" placeholder="Elige tu nombre" required maxlength="20">
+                <input type="text" id="change-name-input" placeholder="Elige tu nombre" required maxlength="10">
                 <label for="name" class="label-change-name">Elige tu nombre</label>
             </div>
 
             <div class="modal-options flex flex-jc-sb flex-ai-c">
-                <img class="icon-dialog" src="style/icons/web-icon/close-black.svg" alt="close-dialog">
-                <img id="change-name-btn" class="icon-dialog" src="style/icons/web-icon/check-black.svg"
-                    alt="change-name">
+                <img class="icon-dialog icon-dialog-name" src="style/icons/web-icon/close-black.svg" alt="close-dialog">
+                <img id="change-name-btn" class="icon-dialog icon-dialog-name"
+                    src="style/icons/web-icon/check-black.svg" alt="change-name">
             </div>
         </dialog>
     </section>
     <section id="game-start-container" class="game-start-container hidden">
-        <div class="game-start-title flex flex-ai-c flex-jc-c">TURNO OPONENTE</div>
+        <div id="game-start-title" class="game-start-title flex flex-ai-c flex-jc-c">TURNO</div>
 
         <div class="grid-oponent-name grid-name flex flex-ai-c">
-            <div class="grid-oponent-name-txt grid-name-txt">IA</div>
+            <div id="grid-oponent-name" class="grid-oponent-name-txt grid-name-txt">IA</div>
         </div>
         <div class="game-grid-container flex flex-ai-c flex-jc-c">
-            <div class="game-grid">
-                <span class="grid-cell" data-grid="1"></span><span class="grid-cell" data-grid="2"></span><span
-                    class="grid-cell" data-grid="3"></span><span class="grid-cell" data-grid="4"></span><span
-                    class="grid-cell" data-grid="5"></span><span class="grid-cell" data-grid="6"></span><span
-                    class="grid-cell" data-grid="7"></span><span class="grid-cell" data-grid="8"></span><span
-                    class="grid-cell" data-grid="9"></span>
+            <div id="game-grid" class="game-grid">
+                <span class="grid-cell" data-grid-y="0" data-grid-x="0"></span><span class="grid-cell" data-grid-y="0"
+                    data-grid-x="1"></span><span class="grid-cell" data-grid-y="0" data-grid-x="2"></span><span
+                    class="grid-cell" data-grid-y="1" data-grid-x="0"></span><span class="grid-cell" data-grid-y="1"
+                    data-grid-x="1"></span><span class="grid-cell" data-grid-y="1" data-grid-x="2"></span><span
+                    class="grid-cell" data-grid-y="2" data-grid-x="0"></span><span class="grid-cell" data-grid-y="2"
+                    data-grid-x="1"></span><span class="grid-cell" data-grid-y="2" data-grid-x="2"></span>
             </div>
         </div>
         <div class="grid-user-name grid-name flex flex-ai-c flex-jc-fe">
             <div id="grid-user-name" class="grid-user-name-txt grid-name-txt">JUGADOR 1</div>
         </div>
-
     </section>
+
+    <dialog id="end-game-dialog" class="dialog-change-name end-game-dialog hidden flex flex-ai-c flex-fd-c flex-jc-sb">
+        <div id="end-game-title" class="end-game-title flex flex-ai-c flex-jc-c"></div>
+        <div>¿Otra Partida?</div>
+        <div class="end-game-options modal-options flex flex-ai-c flex-jc-sb">
+            <img class="icon-dialog icon-dialog-continue" src="style/icons/web-icon/close-black.svg" id="no-newGame-btn"
+                alt="close-dialog-endGame">
+            <img class="icon-dialog icon-dialog-continue" src="style/icons/web-icon/check-black.svg"
+                id="yes-newGame-btn" alt="continue-dialog-endGame">
+        </div>
+    </dialog>
 
     <footer class="footer">See this project on</footer>
     <!--Acá podríamos agregar algo así como made by <a>yo</a> y apuntar al github-->

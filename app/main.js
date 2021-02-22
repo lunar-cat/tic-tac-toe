@@ -1,6 +1,229 @@
 'use strict';
+let newGame = Game();
 
-function IAmakeMove(board, IASymbol) {
+// UI
+
++function hamburguerMenu() {
+    const menuBtn = document.getElementById('menu-mobile');
+    const leaderBoard = document.getElementById('leaderboard');
+    menuBtn.addEventListener('click', function () {
+        menuBtn.classList.toggle('open');
+        leaderBoard.classList.toggle('hidden');
+    });
+}();
++function changeOponent() {
+    const oponentImg = document.getElementById('oponent-img');
+    const changeBtn = document.getElementById('oponent-img-btn');
+    const oponentName = document.getElementById('oponent-name');
+
+    changeBtn.addEventListener('click', function () {
+        switch (+oponentImg.dataset.op) {
+            case 0:
+                oponentImg.dataset.op = "1";
+                oponentName.textContent = "IA HARD";
+                break;
+            case 1:
+                oponentImg.src = "/style/icons/web-icon/face-black.svg";
+                oponentImg.dataset.op = "2";
+                oponentName.textContent = "JUGADOR 2";
+                break;
+            case 2:
+                oponentImg.src = "/style/icons/web-icon/android-black.svg";
+                oponentImg.dataset.op = "0";
+                oponentName.textContent = "IA EASY";
+                break;
+        }
+    });
+}();
++function changeName() {
+    const saveChangeName = document.getElementById('change-name-btn');
+    const nameInput = document.getElementById('change-name-input');
+    const closeDialog = document.getElementsByClassName('icon-dialog-name');
+    const playerName = document.getElementById('player-name');
+    const changeBtn = document.getElementById('user-img-btn');
+    const dialogNameHTML = document.getElementById('change-name-dialog');
+    changeBtn.addEventListener('click', function () {
+        dialogNameHTML.classList.remove('hidden');
+        nameInput.value = '';
+        dialogNameHTML.showModal();
+    });
+    dialogNameHTML.addEventListener('keypress', function (event) {
+        if (event.key === "Enter") saveChangeName.click();
+    });
+    saveChangeName.addEventListener('click', function () {
+        let cleanInput = nameInput.value.slice(0, 10).replace(/\W/g, '');
+        let newName = (cleanInput.length) ? cleanInput : 'JUGADOR 1';
+        playerName.textContent = newName;
+        playerName.dataset.nameUser = newName;
+    });
+
+    Array.from(closeDialog).forEach(btn => btn.addEventListener('click', function () {
+        dialogNameHTML.classList.add('hidden');
+        dialogNameHTML.close()
+    }));
+}();
++function continueGameDialog() {
+    const dialogContinueHTML = document.getElementById('end-game-dialog');
+    const closeDialog = document.getElementsByClassName('icon-dialog-continue');
+    const noNewGameBtn = document.getElementById('no-newGame-btn');
+    const yesNewGameBtn = document.getElementById('yes-newGame-btn');
+    Array.from(closeDialog).forEach(btn => btn.addEventListener('click', function () {
+        dialogContinueHTML.classList.add('hidden');
+        dialogContinueHTML.close()
+    }));
+    noNewGameBtn.addEventListener('click', function () { location.href = '/index.html' });
+    yesNewGameBtn.addEventListener('click', function () {
+        cleanGrid();
+        handleGame();
+    });
+}();
++function startGame() {
+    const startBtn = document.getElementById('start-btn');
+    const gameBodyContainer = document.getElementById('game-body-container');
+    const gameStartContainer = document.getElementById('game-start-container');
+    const previousPlayerName = document.getElementById('player-name');
+    const previousOponentName = document.getElementById('oponent-name');
+    const gridUserName = document.getElementById('grid-user-name');
+    const gridOponentName = document.getElementById('grid-oponent-name');
+    startBtn.addEventListener('click', function () {
+        gridUserName.textContent = previousPlayerName.dataset.nameUser;
+        gridOponentName.textContent = previousOponentName.textContent;
+        gameBodyContainer.classList.add('hidden');
+        gameStartContainer.classList.remove('hidden');
+        cleanGrid();
+        handleGame();
+    });
+}();
+
+function cleanGrid() {
+    const gridSpans = document.getElementsByClassName('grid-cell');
+    Array.from(gridSpans).forEach(span => {
+        span.classList.remove('clicked-cell-user', 'clicked-cell-oponent');
+    });
+}
+
+function getRandomStartNumber() {
+    const num = Math.round((Math.random() * 10) / 10);
+    return num;
+};
+function handleGame() {
+    const whoIsOponent = document.getElementById('oponent-img');
+    let handleOponent;
+    switch (+whoIsOponent.dataset.op) {
+        case 0:
+            handleOponent = gameAgainstIAEasy;
+            break;
+        case 1:
+            handleOponent = gameAgainstIAHard;
+            break;
+        case 2:
+            handleOponent = gameAgainstHuman;
+            break;
+        default:
+            handleOponent = gameAgainstIAHard;
+            break;
+    }
+    const firstPlayer = (getRandomStartNumber())
+        ? 'user'
+        : 'oponent';
+    handleOponent(firstPlayer);
+}
+function gameAgainstIAEasy(firstPlayer) {
+    gameAgainsIA(firstPlayer, IAeasyMove);
+};
+function gameAgainstIAHard(firstPlayer) {
+    gameAgainsIA(firstPlayer, IAhardMove);
+}
+function gameAgainsIA(firstPlayer, functIA) {
+    const gameGrid = document.getElementById('game-grid');
+    gridGameClickVsIA(functIA);
+    console.log(newGame.getBoard());
+    if (firstPlayer === 'user') {
+        newGame.changeCurrentTurn('user');
+    } else {
+        gameGrid.style.zIndex = -99;
+        newGame.changeCurrentTurn('oponent');
+        setTimeout(functIA, 600);
+    };
+}
+function gameAgainstHuman(firstPlayer) {
+    console.log(firstPlayer);
+}
+function changeGameTitle() {
+    const gameTitle = document.getElementById('game-start-title');
+    const userName = document.getElementById('grid-user-name');
+    const oponentName = document.getElementById('grid-oponent-name');
+    if (newGame.getCurrentTurn() === 'user') {
+        gameTitle.textContent = `Turno de ${userName.textContent}`;
+    } else {
+        gameTitle.textContent = `Turno de ${oponentName.textContent}`;
+    };
+};
+function gridGameClickVsIA(functIA) {
+    const gridSpans = document.getElementsByClassName('grid-cell');
+    const gameGrid = document.getElementById('game-grid');
+    Array.from(gridSpans).forEach(span => {
+        span.addEventListener('click', function (event) {
+            if (newGame.getCurrentTurn() === 'user' & event.isTrusted) {
+                event.stopImmediatePropagation();
+                const [x, y] = [+span.dataset.gridX, +span.dataset.gridY];
+                if (newGame.movIsValid(x, y)) {
+                    newGame.makeMove({ x, y }, 1);
+                    span.classList.add('clicked-cell-user');
+                } else {
+                    return;
+                }
+                if (newGame.getStatus() != 'continue') {
+                    endGame('user');
+                    return;
+                } else {
+                    gameGrid.style.zIndex = -99;
+                    newGame.changeCurrentTurn('oponent');
+                    // acá podríamos cambiar la función por la de la IA
+                    const moveInt = function () {
+                        functIA();
+                        if (newGame.getStatus() != 'continue') {
+                            endGame('oponent');
+                            return;
+                        };
+                    }
+                    setTimeout(moveInt, 600);
+                };
+            } else if (newGame.getCurrentTurn() === 'oponent' & !event.isTrusted) {
+                event.stopImmediatePropagation();
+                span.classList.add('clicked-cell-oponent');
+                newGame.changeCurrentTurn('user');
+                gameGrid.style.zIndex = 1;
+            };
+        }, { once: true });
+    });
+};
+function endGame(winner) {
+    const dialogEnd = document.getElementById('end-game-dialog');
+    const dialogTitle = document.getElementById('end-game-title');
+    const userName = document.getElementById('grid-user-name');
+    const oponentName = document.getElementById('grid-oponent-name');
+    if (newGame.getStatus() === 'draw') {
+        dialogTitle.textContent = `Empate!`;
+    } else {
+        let winnerTxt = (winner === 'user') ? userName.textContent : oponentName.textContent;
+        dialogTitle.textContent = `Ha ganado ${winnerTxt}`;
+    };
+    newGame.restartGame();
+    dialogEnd.classList.remove('hidden');
+    dialogEnd.showModal();
+}
+
+
+// Game & IA
+function IAeasyMove() {
+    let [xIA, yIA] = IAgetRandomMove();
+    newGame.makeMove({ x: xIA, y: yIA }, 2);
+    let moveSpan = document.querySelector(`span[data-grid-y="${yIA}"][data-grid-x="${xIA}"]`);
+    moveSpan.click();
+}
+function IAhardMove() {
+    const board = newGame.getBoard();
     const nodeMoveTree = {};
     Object.defineProperty(nodeMoveTree, 'index', {
         value: 0,
@@ -15,7 +238,6 @@ function IAmakeMove(board, IASymbol) {
         const node = Array.from(Object.values(nodeMoveTree)).sort((a, b) => b.value - a.value);
         return node[0];
     }
-
     for (let colPosition = 0; colPosition < board.length; colPosition++) {
         const boardRow = getRow(colPosition, board);
 
@@ -35,12 +257,20 @@ function IAmakeMove(board, IASymbol) {
                 });
             }
             setMoves.forEach(set => {
-                totalSetValue += checkSetMoves(set, moveCoordinates.x, moveCoordinates.y, IASymbol);
+                totalSetValue += checkSetMoves(set, moveCoordinates.x, moveCoordinates.y, 2);
             });
             nodeMoveTree.addNode({ value: totalSetValue.toFixed(2), coordinates: moveCoordinates });
         }
     }
-    return nodeMoveTree.bestMove();
+    const bestMoveCoord = nodeMoveTree.bestMove().coordinates;
+    newGame.makeMove(bestMoveCoord, 2);
+    let moveSpan = document.querySelector(`span[data-grid-y="${bestMoveCoord.y}"][data-grid-x="${bestMoveCoord.x}"]`);
+    moveSpan.click();
+}
+function IAgetRandomMove() {
+    const availableMoves = newGame.availableMoves();
+    const randomMove = Math.round(Math.random() * (availableMoves.length - 1));
+    return availableMoves[randomMove];
 }
 function getRow(y, board) {
     const r = board[y];
@@ -68,15 +298,15 @@ function getDiagonal(x, y, board) {
 }
 function checkSetMoves(set, x, y, IASymbol) {
     let valueMove = 0;
-    let userSymbol = (IASymbol === 2) ? 1 : 2;
-    let position = (set[1] === 'col') ? y : x;
+    let userSymbol = 1;
+    let position = (set[1] === 'row') ? x : y;
 
     let testWinOrLose = set[0].slice();
     testWinOrLose[position] = IASymbol;
-    if (testWinOrLose.every(value => value === IASymbol)) valueMove += 5; // Revisa si ganamos
+    if (testWinOrLose.every(value => value === IASymbol)) valueMove += 99; // Revisa si ganamos
     testWinOrLose[position] = userSymbol;
-    if (testWinOrLose.every(value => value === userSymbol)) valueMove += 3; // Revisa si perdimos
-    if (!set[0].includes(IASymbol) && set[0].includes(userSymbol)) valueMove += 0.4; // Revisa si podemos bloquear a futuro
+    if (testWinOrLose.every(value => value === userSymbol)) valueMove += 50; // Revisa si perdimos
+    if (!set[0].includes(IASymbol) && set[0].includes(userSymbol)) valueMove += 0.5; // Revisa si podemos bloquear a futuro
     if (!set[0].includes(IASymbol)) return valueMove; // Si no hay ningún movimiento nuestro, return;
     if (set[0].includes(userSymbol)) return valueMove; // Si el set en cuestión, tiene un valor enemigo en medio, no nos sirve para ganar ahí po esto quizá deba quitarlo después
     if (position <= 1 && set[0][position + 1] === IASymbol) valueMove += 0.4; // Revisa el siguiente
@@ -86,28 +316,40 @@ function checkSetMoves(set, x, y, IASymbol) {
 }
 
 function Game() {
-    const _board = [
+    let _board = [
         [0, 0, 0],
         [0, 0, 0],
         [0, 0, 0]
     ];
+    _board.currentTurn;
+    _board.gameStatus = 'continue';
+    const getCurrentTurn = () => {
+        return _board.currentTurn;
+    }
+    const changeCurrentTurn = (currentTurn) => {
+        _board.currentTurn = currentTurn;
+        changeGameTitle();
+    };
+    const getStatus = () => {
+        return _board.gameStatus;
+    };
     const getBoard = () => {
         return _board;
     };
-    const makeMove = ({ x, y }, player) => {
-        _board[y][x] = player;
-        return gameContinue({ x, y }, player);
+    const makeMove = ({ x, y }, symbol) => {
+        _board[y][x] = symbol;
+        _board.gameStatus = gameContinue({ x, y }, symbol);
     };
-    const gameContinue = ({ x, y }, player) => {
+    const gameContinue = ({ x, y }, symbol) => {
         let setMoves = [];
         setMoves.push(getRow(y, _board), getColumn(x, _board));
         if (x != 1 && y != 1 || x === 1 && y === 1) {
             const boardDiag = getDiagonal(x, y, _board);
             boardDiag.forEach(arr => setMoves.push(arr));
-        }
-        if (setMoves.some(set => (set.every(value => value === player)))) return 'Ha ganado!';
-        if (_board.some(arr => arr.includes(0))) return 'Se continúa';
-        else return 'Empate';
+        };
+        if (setMoves.some(set => (set.every(value => value === symbol)))) return 'win';
+        if (_board.some(arr => arr.includes(0))) return 'continue';
+        else return 'draw';
     };
     const restartGame = () => {
         // Limpiamos tablero, llama a actualizar LocalScore
@@ -117,19 +359,23 @@ function Game() {
             [0, 0, 0],
             [0, 0, 0]
         ];
+        _board.gameStatus = 'continue';
     };
     const movIsValid = (x, y) => {
         return !_board[y][x];
-    }
-    return { getBoard, gameContinue, makeMove, restartGame, movIsValid };
+    };
+    const availableMoves = () => {
+        const moves = [];
+        for (let Y = 0; Y < getBoard().length; Y++) {
+            for (let X = 0; X < getBoard()[Y].length; X++) {
+                if (!getBoard()[Y][X]) moves.push([X, Y]);
+            };
+        };
+        return moves;
+    };
+    return { getCurrentTurn, changeCurrentTurn, getBoard, getStatus, gameContinue, makeMove, restartGame, movIsValid, availableMoves };
 }
-function Player(name, symbol) {
-    symbol = (symbol === "X") ? 1 : 2;
-    const playerMove = () => {
-        // Acá agregaríamos los datos del eventListener (?
-    }
-    return { name, symbol, playerMove };
-}
+
 function LocalScore() {
     const updateScore = (name, result) => {
         const oldScore = localStorage.getItem(name) ?? 0;
@@ -144,107 +390,6 @@ function LocalScore() {
 }
 /* Podríamos incluir la firebase para hacer scores onlines xd y hacer un leaderboard
 con login y rachas de wins(? */
-let newGame = Game();
-let IASymbol = 2;
-let setMovesUser = [{ x: 1, y: 1 }, { x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 2 }]; // Empate empezando del medio yo primero [{ x: 1, y: 1 }, { x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 2 }]
-let userSymbol = 1;
-let counter = 0;
 
-while (true) {
-    let continueUser = newGame.makeMove(setMovesUser[counter++], userSymbol);
-    console.log(newGame.getBoard(), continueUser);
-    if (continueUser != 'Se continúa') break;
-    let IAmovement = IAmakeMove(newGame.getBoard(), IASymbol);
-    let continueIA = newGame.makeMove(IAmovement.coordinates, IASymbol);
-    console.log(newGame.getBoard(), continueIA);
-    if (continueIA != 'Se continúa') break;
-}
-
-// UI
-
-+function hamburguerMenu() {
-    const menuBtn = document.getElementById('menu-mobile');
-    const leaderBoard = document.getElementById('leaderboard');
-    menuBtn.addEventListener('click', function () {
-        menuBtn.classList.toggle('open');
-        leaderBoard.classList.toggle('hidden');
-    });
-}();
-+function changeOponent() {
-    const oponentImg = document.getElementById('oponent-img');
-    const changeBtn = document.getElementById('oponent-img-btn');
-    const oponentName = document.getElementById('oponent-name');
-
-    changeBtn.addEventListener('click', function () {
-        if (+oponentImg.dataset.op) {
-            oponentImg.src = "/style/icons/web-icon/android-black.svg";
-            oponentImg.dataset.op = "0";
-            oponentName.textContent = "IA";
-        } else {
-            oponentImg.src = "/style/icons/web-icon/face-black.svg";
-            oponentImg.dataset.op = "1";
-            oponentName.textContent = "JUGADOR 2";
-        }
-    });
-}();
-+function changeName() {
-    const saveChangeName = document.getElementById('change-name-btn');
-    const nameInput = document.getElementById('change-name-input');
-    const closeDialog = document.getElementsByClassName('icon-dialog');
-    const playerName = document.getElementById('player-name');
-    const changeBtn = document.getElementById('user-img-btn');
-    const dialogHTML = document.getElementById('change-name-dialog');
-    dialogHTML.addEventListener('keypress', function (event) {
-        if (event.key === "Enter") saveChangeName.click();
-    });
-    saveChangeName.addEventListener('click', function () {
-        const newName = nameInput.value.slice(0, 20);
-        playerName.textContent = newName;
-        playerName.dataset.nameUser = newName;
-    });
-    changeBtn.addEventListener('click', function () {
-        dialogHTML.classList.remove('hidden');
-        nameInput.value = '';
-        dialogHTML.showModal();
-    });
-    Array.from(closeDialog).forEach(btn => btn.addEventListener('click', function () {
-        dialogHTML.classList.add('hidden');
-        dialogHTML.close()
-    }));
-}();
-+function startGame() {
-    const startBtn = document.getElementById('start-btn');
-    const gameBodyContainer = document.getElementById('game-body-container');
-    const gameStartContainer = document.getElementById('game-start-container');
-    const previousPlayerName = document.getElementById('player-name');
-    const gridUserName = document.getElementById('grid-user-name');
-
-    startBtn.addEventListener('click', function () {
-        gameBodyContainer.classList.add('hidden');
-        gameStartContainer.classList.remove('hidden');
-        gridUserName.textContent = previousPlayerName.dataset.nameUser;
-    });
-    
-}();
-+function gridGameClickVisual() { /* Al sacar el evento dentro del eventListener en sí mismo, luego debemos sacar este IIFE y ponerla dentro de otra, que se llame en cada new game */
-    const gridSpans = document.getElementsByClassName('grid-cell');
-    const gridCellClasses = {
-        "-1": "clicked-cell-oponent",
-        "1": "clicked-cell-user",
-        "_index": -1,
-        getClass(){
-            const currentClass = this._index *= -1;
-            return this[currentClass];
-        }
-    }
-    Array.from(gridSpans).forEach(span => {
-        span.addEventListener('click', function handleClick(event) {
-            const gridCellPosition = event.target.dataset.grid; // esta es la posición, el dato del data-grid en los span
-            const currentClass = gridCellClasses.getClass();
-            span.classList.add(currentClass);
-            span.removeEventListener('click', handleClick);
-        });
-    });
-}();
 
 

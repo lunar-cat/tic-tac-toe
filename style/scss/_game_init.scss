@@ -70,5 +70,15 @@
         }
     }
 }
-/* Deberíamos poner, que cuando se juega contra el pc, el otro valor esté al revés
+.end-game-dialog {
+    color: $secondary-color;
+    font-weight: bold;
+    position: relative;
+    > .end-game-title {
+        text-align: center;
+        width: 100%;
+        height: 40%;
+    }
+}
+/* Deberíamos poner, que cuando se juega de 2 personas, el otro nombre esté al revés
 así puede jugar cada uno en un lado de la pantalla */
