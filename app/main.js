@@ -71,7 +71,7 @@ let newGame = Game();
         dialogContinueHTML.classList.add('hidden');
         dialogContinueHTML.close()
     }));
-    noNewGameBtn.addEventListener('click', function () { location.href = '/index.html' });
+    noNewGameBtn.addEventListener('click', function () { location.href = '../' });
     yesNewGameBtn.addEventListener('click', function () {
         cleanGrid();
         handleGame();
