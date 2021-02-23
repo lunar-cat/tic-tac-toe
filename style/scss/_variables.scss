@@ -1,13 +1,24 @@
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
+
 // Fonts
 $main-font: 'Palanquin Dark', sans-serif;
 $secondary-font: 'Hind', sans-serif;
 
 // Colors
-$background-main-color: rgb(70, 142, 145);
-$background-secondary-color: white;
+:root {
+    --background-main-color: rgb(70, 142, 145);
+    --background-secondary-color: white;
+    --main-color: white;
+    --secondary-color: rgb(70, 142, 145);
+    --secondary-contrast-color: #376e70;
+}
 
-$background-main-night-color: rgb(34, 73, 75);
-$background-secondary-night-color: rgb(230, 224, 224);
+$background-main-color: var(--background-main-color);
+$background-secondary-color: var(--background-secondary-color);
 
-$main-color: white;
-$secondary-color: rgb(70, 142, 145);
+$main-color: var(--main-color);
+$secondary-color: var(--secondary-color);
+$secondary-contrast-color: var(--secondary-contrast-color);

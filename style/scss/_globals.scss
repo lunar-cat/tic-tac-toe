@@ -1,3 +1,8 @@
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
+
 html {
     font-size: 100%;
     box-sizing: border-box;
@@ -20,7 +25,8 @@ li {
     list-style: none;
 }
 .game-body {
-    height: 85vh;
+    height: 80vh;
+    background-color: $background-secondary-color;
 }
 p {
     margin: 0px;

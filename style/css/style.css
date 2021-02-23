@@ -1,4 +1,24 @@
 @charset "UTF-8";
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
+:root {
+  --background-main-color: rgb(70, 142, 145);
+  --background-secondary-color: white;
+  --main-color: white;
+  --secondary-color: rgb(70, 142, 145);
+  --secondary-contrast-color: #376e70;
+}
+
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
 html {
   font-size: 100%;
   -webkit-box-sizing: border-box;
@@ -28,7 +48,8 @@ li {
 }
 
 .game-body {
-  height: 85vh;
+  height: 80vh;
+  background-color: var(--background-secondary-color);
 }
 
 p {
@@ -36,6 +57,10 @@ p {
   padding: 0px;
 }
 
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
 .flex {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -116,7 +141,7 @@ p {
           justify-content: center;
   border-radius: 5px;
   background-color: #376e70;
-  color: white;
+  color: var(--main-color);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -137,21 +162,61 @@ p {
   opacity: 0.8;
 }
 
+.tool-tip, .menu-nav > .dark-mode-btn:hover::before, .menu-logo:hover::before, .menu-mobile:hover::before {
+  z-index: 100;
+  content: attr(data-info);
+  white-space: nowrap;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  position: absolute;
+  top: 100%;
+  color: var(--main-color);
+  font-weight: bolder;
+  padding: 5% 8%;
+  background-color: rgba(0, 0, 0, 0.733);
+  border-radius: 5px;
+}
+
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
 .menu-nav {
   height: 10vh;
   position: relative;
-  background-color: #468e91;
+  background-color: var(--background-main-color);
   -webkit-box-shadow: 0px 3px #376e70;
           box-shadow: 0px 3px #376e70;
 }
 
+.menu-nav > .dark-mode-btn {
+  cursor: pointer;
+  height: 50px;
+  width: auto;
+  opacity: 1;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+.menu-nav > .dark-mode-btn:active {
+  opacity: 1;
+}
+
+.menu-nav > .dark-mode-btn > #dark-mode-img {
+  height: 100%;
+  width: 100%;
+}
+
 .menu-logo {
-  height: 65px;
-  width: 65px;
+  height: 50px;
+  width: auto;
   margin-left: 10%;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  position: relative;
 }
 
 .menu-logo > #menu-logo {
@@ -159,20 +224,11 @@ p {
   height: 100%;
 }
 
-.menu-logo:hover {
-  opacity: 0.7;
-}
-
 .menu-mobile {
-  width: 34px;
+  width: 38px;
   margin-right: 10%;
-  height: 29px;
-}
-
-.menu-mobile:hover {
-  opacity: 0.6;
-  -webkit-transition: opacity 0.3s;
-  transition: opacity 0.3s;
+  height: 50px;
+  position: relative;
 }
 
 .menu-mobile span {
@@ -190,7 +246,7 @@ p {
   position: absolute;
   top: 0px;
   content: ' ';
-  background-color: white;
+  background-color: var(--main-color);
   height: 5px;
   width: 100%;
 }
@@ -213,14 +269,24 @@ p {
   top: 10vh;
   position: absolute;
   width: 100%;
-  background: white;
+  background: var(--background-secondary-color);
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   z-index: 99;
 }
 
+.leaderboard > .leaderboard-title {
+  font-size: 2.2rem;
+  color: var(--secondary-color);
+  height: 20%;
+  padding: 2%;
+  font-weight: bolder;
+}
+
 .leaderboard .leaderboard-container {
-  color: white;
+  height: 80%;
+  width: 90%;
+  color: var(--main-color);
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 2fr 1fr 1fr 1fr 2fr;
@@ -231,29 +297,30 @@ p {
   row-gap: 3px;
   -webkit-column-gap: 3px;
           column-gap: 3px;
-  justify-items: flex-start;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 .leaderboard .leaderboard-container > span {
   padding-top: 5px;
-  padding-left: 15px;
+  padding-left: 5px;
   height: 100%;
   width: 100%;
-  background-color: #468e91;
+  background-color: var(--background-main-color);
+  border-radius: 5px;
 }
 
 .leaderboard .leaderboard-container > span.leader-title {
-  color: #468e91;
-  background: white;
+  color: var(--secondary-color);
+  background: var(--background-secondary-color);
   font-weight: bold;
 }
 
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
 .main-game, .game-selection-title, .option-vs, .start-btn {
-  background-color: white;
-  color: #468e91;
+  background-color: var(--background-secondary-color);
+  color: var(--secondary-color);
   font-weight: 600;
 }
 
@@ -280,7 +347,7 @@ p {
   border-radius: 50%;
   background: -webkit-gradient(linear, left top, right top, color-stop(50%, #e4ff89), color-stop(50%, #abd4ff));
   background: linear-gradient(to right, #e4ff89 50%, #abd4ff 50% 100%);
-  border: 2px solid #468e91;
+  border: 2px solid var(--secondary-color);
   -webkit-animation: fadeIn 0.5s;
           animation: fadeIn 0.5s;
   -webkit-transform: rotate(-30deg);
@@ -321,14 +388,14 @@ p {
   position: absolute;
   z-index: 3;
   top: 5%;
-  border: 2px solid #376e70;
+  border: 2px solid var(--secondary-contrast-color);
   border-radius: 5px;
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  color: #376e70;
+  color: var(--secondary-contrast-color);
 }
 
 .start-btn:hover {
@@ -348,8 +415,8 @@ p {
   width: 80%;
   height: 80%;
   border-radius: 50%;
-  background-color: white;
-  color: #468e91;
+  background-color: var(--background-secondary-color);
+  color: var(--secondary-color);
   -webkit-transform: rotate(30deg);
           transform: rotate(30deg);
 }
@@ -437,7 +504,7 @@ p {
 }
 
 .option-name {
-  color: #468e91;
+  color: var(--secondary-color);
   font-weight: 600;
   font-size: 1.7rem;
   width: 50%;
@@ -447,10 +514,11 @@ p {
 
 .dialog-change-name {
   height: 150px;
-  border: 2px solid #468e91;
+  border: 2px solid var(--secondary-color);
   border-radius: 10px;
   padding: 0px;
   width: 200px;
+  background-color: var(--background-secondary-color);
 }
 
 .dialog-change-name::-webkit-backdrop {
@@ -472,7 +540,7 @@ p {
 
 .dialog-change-name .modal-input-container .label-change-name {
   font-weight: 500;
-  color: #468e91;
+  color: var(--secondary-color);
   z-index: 0;
   position: relative;
   top: 50%;
@@ -499,7 +567,7 @@ p {
   -webkit-box-shadow: none;
           box-shadow: none;
   box-shadow: none;
-  border: 2px solid #468e91;
+  border: 2px solid var(--secondary-color);
 }
 
 .dialog-change-name #change-name-input:focus + .label-change-name {
@@ -547,18 +615,22 @@ p {
 }
 
 .dialog-change-name .modal-options .icon-dialog:hover:active {
-  border: 2px solid #468e91;
+  border: 2px solid var(--secondary-color);
 }
 
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
 .game-start-container {
-  height: 85vh;
-  position: relative;
+  height: 80vh;
+  background-color: var(--background-secondary-color);
 }
 
 .game-start-container > .game-start-title {
   font-size: 2rem;
   height: 10%;
-  color: #468e91;
+  color: var(--secondary-color);
   font-weight: 600;
   position: relative;
 }
@@ -579,13 +651,13 @@ p {
 
 .game-start-container > .grid-name > .grid-name-txt.disabled {
   opacity: 0.4;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
 }
 
 .game-start-container > .grid-name > .grid-name-txt.active {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
 }
@@ -612,7 +684,7 @@ p {
 .game-start-container > .game-grid-container > .game-grid {
   height: 350px;
   width: 350px;
-  background-color: #468e91;
+  background-color: var(--background-main-color);
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: auto;
@@ -627,7 +699,7 @@ p {
 }
 
 .game-start-container > .game-grid-container > .game-grid > span {
-  background-color: white;
+  background-color: var(--background-secondary-color);
 }
 
 .game-start-container > .game-grid-container > .game-grid .clicked-cell-user {
@@ -647,7 +719,8 @@ p {
 }
 
 .end-game-dialog {
-  color: #468e91;
+  background-color: var(--background-secondary-color);
+  color: var(--secondary-color);
   font-weight: bold;
   position: relative;
 }
@@ -660,11 +733,51 @@ p {
 
 /* Deberíamos poner, que cuando se juega de 2 personas, el otro nombre esté al revés
 así puede jugar cada uno en un lado de la pantalla */
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
 .footer {
+  -webkit-box-shadow: 0px -3px rgba(102, 189, 128, 0.747);
+          box-shadow: 0px -3px rgba(102, 189, 128, 0.747);
   position: relative;
   bottom: 0px;
   width: 100%;
-  background-color: #caa0ca;
-  height: 5vh;
+  background-color: rgba(123, 225, 153, 0.44);
+  height: 10vh;
+}
+
+.footer .footer-text {
+  color: rgba(0, 0, 0, 0.658);
+  font-weight: bolder;
+  font-size: 1.2rem;
+}
+
+.footer .social-footer {
+  width: 20%;
+  height: 30px;
+}
+
+.footer .social-footer #github-logo {
+  width: auto;
+  height: 100%;
+}
+
+.footer .social-footer #linkedin-logo {
+  width: auto;
+  height: 100%;
+}
+
+.footer-link-container {
+  width: auto;
+  height: 100%;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 1px 3px;
+}
+
+.footer-link-container.link-color {
+  background-color: rgba(102, 189, 128, 0.747);
 }
 /*# sourceMappingURL=style.css.map */

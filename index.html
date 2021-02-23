@@ -1,5 +1,11 @@
+<!--
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+-->
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -13,23 +19,23 @@
 
 <body>
     <nav class="menu-nav flex flex-jc-sb flex-ai-c">
-        <a class="menu-logo" href="index.html"><img id="menu-logo" src="style/icons/web-icon/game-white.svg"
-                alt="Logo"></a>
-        <div id="menu-mobile" class="menu-mobile flex flex-fd-c flex-jc-sb">
+        <a data-info="Página Principal" class="menu-logo flex flex-jc-c" href="index.html"><img id="menu-logo"
+                src="style/icons/web-icon/game-white.svg" alt="Logo"></a>
+        <div class="dark-mode-btn flex flex-jc-c" id="dark-mode-btn" data-color="0" data-info="Cambiar Tema">
+            <img id="dark-mode-img" src="style/icons/web-icon/dark-mode.svg" alt="dark-mode-btn">
+        </div>
+        <div data-info="Leaderboard" id="menu-mobile" class="menu-mobile flex flex-fd-c flex-jc-se flex-ai-c">
             <span></span><span></span><span></span>
         </div>
 
-        <div class="leaderboard hidden" id="leaderboard">
-            <!-- Esto debería estar escondido -->
-            <p>Leaderboard</p>
+        <div class="leaderboard hidden flex flex-ai-c flex-fd-c" id="leaderboard">
+            <div class="leaderboard-title">Leaderboard</div>
             <div class="leaderboard-container">
                 <span class="user-name leader-title">Nombre</span><span class="user-win leader-title">W</span><span
                     class="user-lose leader-title">L</span><span class="user-draw leader-title">D</span><span
                     class="user-date leader-title">Fecha</span>
                 <span class="user-name">awa</span><span class="user-win">12</span><span class="user-lose">5</span><span
-                    class="user-draw">55</span><span class="user-date">18/18/18</span>
-                <span class="user-name">awa</span><span class="user-win">12</span><span class="user-lose">5</span><span
-                    class="user-draw">55</span><span class="user-date">18/18/18</span>
+                    class="user-draw">55</span><span class="user-date">18 / 18 / 18</span>
             </div>
         </div>
     </nav>
@@ -67,7 +73,8 @@
             </div>
 
             <div class="modal-options flex flex-jc-sb flex-ai-c">
-                <img class="icon-dialog icon-dialog-name" src="style/icons/web-icon/close-black.svg" alt="close-dialog">
+                <img id="change-name-btn-no" class="icon-dialog icon-dialog-name"
+                    src="style/icons/web-icon/close-black.svg" alt="close-dialog">
                 <img id="change-name-btn" class="icon-dialog icon-dialog-name"
                     src="style/icons/web-icon/check-black.svg" alt="change-name">
             </div>
@@ -105,7 +112,21 @@
         </div>
     </dialog>
 
-    <footer class="footer">See this project on</footer>
+    <footer class="footer flex flex-ai-c flex-jc-se  flex-fd-c">
+        <div class="footer-text">
+            Made with &lt;3 by <a class="footer-link-container link-color" target="_blank"
+                href="https://github.com/lunar-cat/tic-tac-toe">Lunar &#127769 Cat &#128049</a>
+        </div>
+
+        <div class="social-footer flex flex-ai-c flex-jc-se">
+            <a class="footer-link-container" href="https://github.com/lunar-cat" target="_blank">
+                <img id="github-logo" src="style/icons/web-icon/github-dark.png" alt="Github Logo">
+            </a>
+            <a class="footer-link-container" href="https://www.linkedin.com/in/jose-pradenas-navarro/" target="_blank">
+                <img id="linkedin-logo" src="style/icons/web-icon/linkedin.png" alt="Linkedin Logo">
+            </a>
+        </div>
+    </footer>
     <!--Acá podríamos agregar algo así como made by <a>yo</a> y apuntar al github-->
     <script src="app/main.js"></script>
 </body>

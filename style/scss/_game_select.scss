@@ -1,3 +1,8 @@
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
+
 .main-game {
     background-color: $background-secondary-color;
     color: $secondary-color;
@@ -47,11 +52,11 @@
     position: absolute;
     z-index: 3;
     top: 5%; 
-    border: 2px solid #376e70;
+    border: 2px solid $secondary-contrast-color;
     border-radius: 5px;
     cursor: pointer;
     user-select: none;
-    color: #376e70;
+    color: $secondary-contrast-color;
     &:hover {opacity: 0.7;}
     &:active {opacity: 1;}
     > #start-icon {
@@ -63,7 +68,7 @@
     width: 80%;
     height: 80%;
     border-radius: 50%;
-    background-color: white;
+    background-color: $background-secondary-color;
     color: $secondary-color;
     transform: rotate(30deg);
 }
@@ -135,6 +140,7 @@
     border-radius: 10px;
     padding: 0px;
     width: 200px;
+    background-color: $background-secondary-color;
     .modal-input-container {
         height: 60%;
         width: 100%;

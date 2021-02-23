@@ -1,7 +1,73 @@
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
 'use strict';
 let newGame = Game();
 
 // UI
+
++function darkMode() {
+    const root = document.documentElement;
+    const darkModeBtn = document.getElementById('dark-mode-btn');
+    const endGameDialogBtnYes = document.getElementById('no-newGame-btn');
+    const endGameDialogBtnNo = document.getElementById('yes-newGame-btn');
+
+    const changeNameDialogBtnYes = document.getElementById('change-name-btn');
+    const changeNameDialogBtnNo = document.getElementById('change-name-btn-no');
+
+    const startGamePadIcon = document.getElementById('start-icon');
+    const darkModeIcon = document.getElementById('dark-mode-img');
+
+    const lightModeSet = {
+        backMain: 'rgb(70, 142, 145)',
+        backSecond: 'white',
+        mainColor: 'white',
+        secondColor: 'rgb(70, 142, 145)',
+        secondContrastColor: '#376e70',
+    };
+    const darkModeSet = {
+        backMain: 'black',
+        backSecond: 'rgb(70, 142, 145)',
+        mainColor: 'white',
+        secondColor: 'white',
+        secondContrastColor: 'white',
+    }
+    darkModeBtn.addEventListener('click', function(){
+        if (darkModeBtn.dataset.color === "0") {
+            root.style.setProperty('--background-main-color', darkModeSet.backMain);
+            root.style.setProperty('--background-secondary-color', darkModeSet.backSecond);
+            root.style.setProperty('--main-color', darkModeSet.mainColor);
+            root.style.setProperty('--secondary-color', darkModeSet.secondColor);
+            root.style.setProperty('--secondary-contrast-color', darkModeSet.secondContrastColor);
+
+            endGameDialogBtnYes.src = 'style/icons/web-icon/close-white.svg';
+            endGameDialogBtnNo.src = 'style/icons/web-icon/check-white.svg';
+            startGamePadIcon.src = 'style/icons/web-icon/gamepad-white.svg';
+            darkModeIcon.src = 'style/icons/web-icon/dark-mode-white.svg';
+            changeNameDialogBtnYes.src = 'style/icons/web-icon/check-white.svg';
+            changeNameDialogBtnNo.src = 'style/icons/web-icon/close-white.svg';
+
+            darkModeBtn.dataset.color = "1";
+        } else {
+            root.style.setProperty('--background-main-color', lightModeSet.backMain);
+            root.style.setProperty('--background-secondary-color', lightModeSet.backSecond);
+            root.style.setProperty('--main-color', lightModeSet.mainColor);
+            root.style.setProperty('--secondary-color', lightModeSet.secondColor);
+            root.style.setProperty('--secondary-contrast-color', lightModeSet.secondContrastColor);
+
+            endGameDialogBtnYes.src = 'style/icons/web-icon/close-black.svg';
+            endGameDialogBtnNo.src = 'style/icons/web-icon/check-black.svg';
+            startGamePadIcon.src = 'style/icons/web-icon/gamepad-black.svg';
+            darkModeIcon.src = 'style/icons/web-icon/dark-mode.svg';
+            changeNameDialogBtnYes.src = 'style/icons/web-icon/check-black.svg';
+            changeNameDialogBtnNo.src = 'style/icons/web-icon/close-black.svg';
+
+            darkModeBtn.dataset.color = "0";
+        }
+        
+    });
+}();
 
 +function hamburguerMenu() {
     const menuBtn = document.getElementById('menu-mobile');
@@ -141,7 +207,7 @@ function gameAgainsIA(firstPlayer, functIA) {
     if (firstPlayer === 'user') {
         newGame.changeCurrentTurn('user');
     } else {
-        gameGrid.style.zIndex = -99;
+        gameGrid.style.pointerEvents = 'none';
         newGame.changeCurrentTurn('oponent');
         setTimeout(functIA, 600);
     };
@@ -153,10 +219,20 @@ function changeGameTitle() {
     const gameTitle = document.getElementById('game-start-title');
     const userName = document.getElementById('grid-user-name');
     const oponentName = document.getElementById('grid-oponent-name');
+
     if (newGame.getCurrentTurn() === 'user') {
         gameTitle.textContent = `Turno de ${userName.textContent}`;
+        userName.classList.add('active');
+        userName.classList.remove('disabled');
+        oponentName.classList.add('disabled');
+        oponentName.classList.remove('active');
+
     } else {
         gameTitle.textContent = `Turno de ${oponentName.textContent}`;
+        userName.classList.add('disabled');
+        userName.classList.remove('active');
+        oponentName.classList.add('active');
+        oponentName.classList.remove('disabled');
     };
 };
 function gridGameClickVsIA(functIA) {
@@ -177,7 +253,7 @@ function gridGameClickVsIA(functIA) {
                     endGame('user');
                     return;
                 } else {
-                    gameGrid.style.zIndex = -99;
+                    gameGrid.style.pointerEvents = 'none';
                     newGame.changeCurrentTurn('oponent');
                     // acá podríamos cambiar la función por la de la IA
                     const moveInt = function () {
@@ -193,7 +269,7 @@ function gridGameClickVsIA(functIA) {
                 event.stopImmediatePropagation();
                 span.classList.add('clicked-cell-oponent');
                 newGame.changeCurrentTurn('user');
-                gameGrid.style.zIndex = 1;
+                gameGrid.style.pointerEvents = 'all';
             };
         }, { once: true });
     });

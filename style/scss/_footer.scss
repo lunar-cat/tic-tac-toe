@@ -1,7 +1,42 @@
+/* 
+    TIC-TAC-TOE website
+    Copyright (C) 2021  José Pradenas Navarro
+*/
+
 .footer {
+    box-shadow: 0px -3px rgba(102, 189, 128, 0.747);
     position: relative; // fixed aplica según el viewport por lo cual, aun cuando el body sea chiquito, lo pega al bottom 0 del viewport
     bottom: 0px;
     width: 100%;
-    background-color: rgb(202, 160, 202);
-    height: 5vh;
+    background-color: rgba(123, 225, 153, 0.44); // rgba(123, 225, 153, 0.44) | rgba(148, 57, 148, 0.438)
+    height: 10vh;
+    .footer-text {
+        color: rgba(0, 0, 0, 0.658);
+        font-weight: bolder;
+        font-size: 1.2rem;
+    }
+    .social-footer {
+        width: 20%;
+        height: 30px;
+         #github-logo {
+            width: auto;
+            height: 100%;
+        }
+         #linkedin-logo {
+            width: auto;
+            height: 100%;
+        }
+    }
+
+}
+.footer-link-container{
+    width: auto;
+    height: 100%;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 1px 3px;
+    &.link-color {
+        background-color: rgba(102, 189, 128, 0.747); // | rgba(148, 57, 148, 0.541)
+    }
 }
