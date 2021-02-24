@@ -25,12 +25,10 @@
 
         <div class="leaderboard hidden flex flex-ai-c flex-fd-c" id="leaderboard">
             <div class="leaderboard-title">Leaderboard</div>
-            <div class="leaderboard-container">
-                <span class="user-name leader-title">Nombre</span><span class="user-win leader-title">W</span><span
-                    class="user-lose leader-title">L</span><span class="user-draw leader-title">D</span><span
-                    class="user-date leader-title">Fecha</span>
-                <span class="user-name">awa</span><span class="user-win">12</span><span class="user-lose">5</span><span
-                    class="user-draw">55</span><span class="user-date">18 / 18 / 18</span>
+            <div class="leaderboard-container" id="leaderboard-container">
+                <span class="user-name leader-title">Nombre</span><span class="user-win leader-title">Win</span><span
+                    class="user-lose leader-title">Lose</span><span class="user-draw leader-title">Draw</span><span
+                    class="user-date leader-title">Date</span>
             </div>
         </div>
     </nav>
@@ -79,7 +77,7 @@
         <div id="game-start-title" class="game-start-title flex flex-ai-c flex-jc-c">TURNO</div>
 
         <div class="grid-oponent-name grid-name flex flex-ai-c">
-            <div id="grid-oponent-name" class="grid-oponent-name-txt grid-name-txt">IA</div>
+            <div id="grid-oponent-name" class="grid-oponent-name-txt grid-name-txt disabled">IA</div>
         </div>
         <div class="game-grid-container flex flex-ai-c flex-jc-c">
             <div id="game-grid" class="game-grid">
@@ -92,7 +90,7 @@
             </div>
         </div>
         <div class="grid-user-name grid-name flex flex-ai-c flex-jc-fe">
-            <div id="grid-user-name" class="grid-user-name-txt grid-name-txt">JUGADOR 1</div>
+            <div id="grid-user-name" class="grid-user-name-txt grid-name-txt disabled">JUGADOR 1</div>
         </div>
     </section>
 
@@ -109,7 +107,7 @@
 
     <footer class="footer flex flex-ai-c flex-jc-se  flex-fd-c">
         <div class="footer-text">
-            Made with &lt;3 by <a class="footer-link-container link-color" target="_blank"
+            Made by <a class="footer-link-container link-color" target="_blank"
                 href="https://github.com/lunar-cat/tic-tac-toe">Lunar &#127769 Cat &#128049</a>
         </div>
 
@@ -122,7 +120,8 @@
             </a>
         </div>
     </footer>
-    <!--Acá podríamos agregar algo así como made by <a>yo</a> y apuntar al github-->
+
+
     <script src="app/main.js"></script>
 </body>
 

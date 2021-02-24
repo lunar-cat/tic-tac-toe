@@ -24,6 +24,7 @@
                 transition: all 0.5s ease-in-out;
             }
             &.active {
+                opacity: 1;
                 font-size: 2.1rem;
                 transition: all 0.5s ease-in-out;
             }
@@ -52,6 +53,9 @@
             ". . .";
             > span {
                 background-color: $background-secondary-color;
+                &:hover:not(.clicked-cell-oponent):not(.clicked-cell-user) {
+                    opacity: 0.5;
+                }
             }
             .clicked-cell-user {
                 width: 100%;

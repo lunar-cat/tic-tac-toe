@@ -1,6 +1,7 @@
 'use strict';
 let newGame = Game();
-
+let userScore = LocalScore();
+loadScores();
 // UI
 
 +function darkMode() {
@@ -30,7 +31,7 @@ let newGame = Game();
         secondColor: 'white',
         secondContrastColor: 'white',
     }
-    darkModeBtn.addEventListener('click', function(){
+    darkModeBtn.addEventListener('click', function () {
         if (darkModeBtn.dataset.color === "0") {
             root.style.setProperty('--background-main-color', darkModeSet.backMain);
             root.style.setProperty('--background-secondary-color', darkModeSet.backSecond);
@@ -64,10 +65,9 @@ let newGame = Game();
             documentThemeColor.setAttribute('content', lightModeSet.backMain);
             darkModeBtn.dataset.color = "0";
         }
-        
+
     });
 }();
-
 +function hamburguerMenu() {
     const menuBtn = document.getElementById('menu-mobile');
     const leaderBoard = document.getElementById('leaderboard');
@@ -159,14 +159,36 @@ let newGame = Game();
         handleGame();
     });
 }();
+function loadScores() {
+    const leaderboardContainer = document.getElementById('leaderboard-container');
+    const scores = userScore.getScores();
+    if (!scores.length) return;
+    scores.forEach(userScore => {
+        const scoreName = document.createElement('span');
+        const scoreWin = document.createElement('span');
+        const scoreLose = document.createElement('span');
+        const scoreDraw = document.createElement('span');
+        const scoreDate = document.createElement('span');
+        const listScores = [scoreName, scoreWin, scoreLose, scoreDraw, scoreDate];
+        const listClasses = ['user-name', 'user-win', 'user-lose', 'user-draw', 'user-date'];
+        const listNewValues = [userScore[0], userScore[1].w, userScore[1].l, userScore[1].d, userScore[1].date];
+        let index = 0;
+        listScores.forEach(value => {
+            value.textContent = listNewValues[index];
+            value.classList.add(listClasses[index]);
+            ++index;
+        });
+        leaderboardContainer.append(scoreName, scoreWin, scoreLose, scoreDraw, scoreDate);
+    });
+}
 
+// Game
 function cleanGrid() {
     const gridSpans = document.getElementsByClassName('grid-cell');
     Array.from(gridSpans).forEach(span => {
         span.classList.remove('clicked-cell-user', 'clicked-cell-oponent');
     });
 }
-
 function getRandomStartNumber() {
     const num = Math.round((Math.random() * 10) / 10);
     return num;
@@ -194,15 +216,14 @@ function handleGame() {
     handleOponent(firstPlayer);
 }
 function gameAgainstIAEasy(firstPlayer) {
-    gameAgainsIA(firstPlayer, IAeasyMove);
+    gameAgainstIA(firstPlayer, IAeasyMove);
 };
 function gameAgainstIAHard(firstPlayer) {
-    gameAgainsIA(firstPlayer, IAhardMove);
+    gameAgainstIA(firstPlayer, IAhardMove);
 }
-function gameAgainsIA(firstPlayer, functIA) {
+function gameAgainstIA(firstPlayer, functIA) {
     const gameGrid = document.getElementById('game-grid');
-    gridGameClickVsIA(functIA);
-    console.log(newGame.getBoard());
+    handleIAandUserMoves(functIA);
     if (firstPlayer === 'user') {
         newGame.changeCurrentTurn('user');
     } else {
@@ -218,29 +239,20 @@ function changeGameTitle() {
     const gameTitle = document.getElementById('game-start-title');
     const userName = document.getElementById('grid-user-name');
     const oponentName = document.getElementById('grid-oponent-name');
+    const arrayData = [[userName, oponentName], [oponentName, userName], [userName.textContent, oponentName.textContent]]
+    const index = (newGame.getCurrentTurn() === 'user') ? 0 : 1;
 
-    if (newGame.getCurrentTurn() === 'user') {
-        gameTitle.textContent = `Turno de ${userName.textContent}`;
-        userName.classList.add('active');
-        userName.classList.remove('disabled');
-        oponentName.classList.add('disabled');
-        oponentName.classList.remove('active');
-
-    } else {
-        gameTitle.textContent = `Turno de ${oponentName.textContent}`;
-        userName.classList.add('disabled');
-        userName.classList.remove('active');
-        oponentName.classList.add('active');
-        oponentName.classList.remove('disabled');
-    };
-};
-function gridGameClickVsIA(functIA) {
+    gameTitle.textContent = `Turno de ${arrayData[2][index]}`;
+    arrayData[0][index].classList.add('active');
+    arrayData[1][index].classList.remove('active');
+}
+function handleIAandUserMoves(functIA) { // Creo que ya no es necesario el event.stopInmediatePropagation() en ambas llamadas
     const gridSpans = document.getElementsByClassName('grid-cell');
     const gameGrid = document.getElementById('game-grid');
+
     Array.from(gridSpans).forEach(span => {
         span.addEventListener('click', function (event) {
             if (newGame.getCurrentTurn() === 'user' & event.isTrusted) {
-                event.stopImmediatePropagation();
                 const [x, y] = [+span.dataset.gridX, +span.dataset.gridY];
                 if (newGame.movIsValid(x, y)) {
                     newGame.makeMove({ x, y }, 1);
@@ -248,24 +260,22 @@ function gridGameClickVsIA(functIA) {
                 } else {
                     return;
                 }
-                if (newGame.getStatus() != 'continue') {
+                if (gameIsOver()) {
                     endGame('user');
                     return;
                 } else {
                     gameGrid.style.pointerEvents = 'none';
                     newGame.changeCurrentTurn('oponent');
-                    // acá podríamos cambiar la función por la de la IA
-                    const moveInt = function () {
+                    const delayedMov = function () {
                         functIA();
-                        if (newGame.getStatus() != 'continue') {
+                        if (gameIsOver()) {
                             endGame('oponent');
                             return;
                         };
                     }
-                    setTimeout(moveInt, 600);
+                    setTimeout(delayedMov, 600);
                 };
             } else if (newGame.getCurrentTurn() === 'oponent' & !event.isTrusted) {
-                event.stopImmediatePropagation();
                 span.classList.add('clicked-cell-oponent');
                 newGame.changeCurrentTurn('user');
                 gameGrid.style.pointerEvents = 'all';
@@ -273,24 +283,44 @@ function gridGameClickVsIA(functIA) {
         }, { once: true });
     });
 };
-function endGame(winner) {
+function gameIsOver() {
+    return (newGame.getStatus() != 'continue');
+}
+function endGame(player) {
     const dialogEnd = document.getElementById('end-game-dialog');
     const dialogTitle = document.getElementById('end-game-title');
     const userName = document.getElementById('grid-user-name');
     const oponentName = document.getElementById('grid-oponent-name');
+
     if (newGame.getStatus() === 'draw') {
         dialogTitle.textContent = `Empate!`;
     } else {
-        let winnerTxt = (winner === 'user') ? userName.textContent : oponentName.textContent;
+        let winnerTxt = (player === 'user') ? userName.textContent : oponentName.textContent;
         dialogTitle.textContent = `Ha ganado ${winnerTxt}`;
     };
+    uploadScore(player, userName.textContent);
     newGame.restartGame();
     dialogEnd.classList.remove('hidden');
     dialogEnd.showModal();
 }
-
-
+function uploadScore(player, userName) {
+    const finalScore = (newGame.getStatus() === 'draw')
+        ? 'd'
+        : (player === 'user')
+            ? 'w'
+            : 'l';
+    const date = new Date;
+    userScore.updateScore(userName, {
+        score: finalScore,
+        date: `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear()}`
+    });
+}
 // Game & IA
+function IAgetRandomMove() {
+    const availableMoves = newGame.availableMoves();
+    const randomMove = Math.round(Math.random() * (availableMoves.length - 1));
+    return availableMoves[randomMove];
+}
 function IAeasyMove() {
     let [xIA, yIA] = IAgetRandomMove();
     newGame.makeMove({ x: xIA, y: yIA }, 2);
@@ -342,11 +372,6 @@ function IAhardMove() {
     let moveSpan = document.querySelector(`span[data-grid-y="${bestMoveCoord.y}"][data-grid-x="${bestMoveCoord.x}"]`);
     moveSpan.click();
 }
-function IAgetRandomMove() {
-    const availableMoves = newGame.availableMoves();
-    const randomMove = Math.round(Math.random() * (availableMoves.length - 1));
-    return availableMoves[randomMove];
-}
 function getRow(y, board) {
     const r = board[y];
     return r;
@@ -371,16 +396,16 @@ function getDiagonal(x, y, board) {
         return [d, e];
     }
 }
-function checkSetMoves(set, x, y, IASymbol) {
+function checkSetMoves(set, x, y, IASymbol) { // Revisar valores, agregar que si hay sets limpios enteros, eso también da valor, debería permitir que la IA empieza en el medio 
     let valueMove = 0;
     let userSymbol = 1;
-    let position = (set[1] === 'row') 
-        ? x 
+    let position = (set[1] === 'row')
+        ? x
         : (set[1] === 'col')
-        ? y
-        : (y === 1)
-        ? 1
-        : 0;
+            ? y
+            : (y === 1)
+                ? 1
+                : 0;
 
     let testWinOrLose = set[0].slice();
     testWinOrLose[position] = IASymbol;
@@ -395,7 +420,6 @@ function checkSetMoves(set, x, y, IASymbol) {
 
     return +valueMove.toFixed(2);
 }
-
 function Game() {
     let _board = [
         [0, 0, 0],
@@ -456,21 +480,27 @@ function Game() {
     };
     return { getCurrentTurn, changeCurrentTurn, getBoard, getStatus, gameContinue, makeMove, restartGame, movIsValid, availableMoves };
 }
-
 function LocalScore() {
     const updateScore = (name, result) => {
-        const oldScore = localStorage.getItem(name) ?? 0;
-        localStorage.setItem(name, JSON.stringify(+result + +oldScore));
+        const oldItem = localStorage.getItem(name) ?? JSON.stringify({ w: 0, l: 0, d: 0, date: 0 });
+        const newItem = JSON.parse(oldItem);
+        newItem[result.score] += 1;
+        newItem.date = result.date;
+        localStorage.setItem(name, JSON.stringify(newItem));
     };
     const getScores = () => {
-        const scores = Object.entries(localStorage); // [ ['uwu', "1"], ['awa', "2"] ]
-        scores.sort((a, b) => +a - +b);
-        return scores;
+        if (!localStorage.length) return false;
+        const scores = Object.entries(localStorage);
+        const parsedScores = scores.map(obj => [obj[0], JSON.parse(obj[1])]);
+        parsedScores.sort((a, b) => +a[1] - +b[1]);
+        return parsedScores;
     };
     return { updateScore, getScores };
 }
-/* Podríamos incluir la firebase para hacer scores onlines xd y hacer un leaderboard
-con login y rachas de wins(? */
 
 
-
+/* tengo que ver cómo agregar scores al terminar, porque si llamamos loadScores
+se recarga todo denuevo, y se duplican los existentes
+por ello necesitaríamos otra función para cargar al momento
+si existe el usuario, que se sume a lo que ya está
+y si no, que se agrege? */
