@@ -1,7 +1,3 @@
-/* 
-    TIC-TAC-TOE website
-    Copyright (C) 2021  José Pradenas Navarro
-*/
 'use strict';
 let newGame = Game();
 
