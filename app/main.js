@@ -19,6 +19,7 @@ let newGame = Game();
     const startGamePadIcon = document.getElementById('start-icon');
     const darkModeIcon = document.getElementById('dark-mode-img');
 
+    const documentThemeColor = document.querySelector('meta[name="theme-color"]');
     const lightModeSet = {
         backMain: 'rgb(70, 142, 145)',
         backSecond: 'white',
@@ -48,6 +49,7 @@ let newGame = Game();
             changeNameDialogBtnYes.src = 'style/icons/web-icon/check-white.svg';
             changeNameDialogBtnNo.src = 'style/icons/web-icon/close-white.svg';
 
+            documentThemeColor.setAttribute('content', darkModeSet.backMain);
             darkModeBtn.dataset.color = "1";
         } else {
             root.style.setProperty('--background-main-color', lightModeSet.backMain);
@@ -63,6 +65,7 @@ let newGame = Game();
             changeNameDialogBtnYes.src = 'style/icons/web-icon/check-black.svg';
             changeNameDialogBtnNo.src = 'style/icons/web-icon/close-black.svg';
 
+            documentThemeColor.setAttribute('content', lightModeSet.backMain);
             darkModeBtn.dataset.color = "0";
         }
         
