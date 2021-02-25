@@ -224,13 +224,8 @@ function gameAgainstIAHard(firstPlayer) {
 function gameAgainstIA(firstPlayer, functIA) {
     const gameGrid = document.getElementById('game-grid');
     handleIAandUserMoves(functIA);
-    if (firstPlayer === 'user') {
-        newGame.changeCurrentTurn('user');
-    } else {
-        gameGrid.style.pointerEvents = 'none';
-        newGame.changeCurrentTurn('oponent');
-        setTimeout(functIA, 600);
-    };
+    if (firstPlayer === 'user') newGame.changeCurrentTurn('user');
+    else IAdelayedMovement(functIA, gameGrid);
 }
 function gameAgainstHuman(firstPlayer) {
     console.log(firstPlayer);
@@ -246,7 +241,7 @@ function changeGameTitle() {
     arrayData[0][index].classList.add('active');
     arrayData[1][index].classList.remove('active');
 }
-function handleIAandUserMoves(functIA) { // Creo que ya no es necesario el event.stopInmediatePropagation() en ambas llamadas
+function handleIAandUserMoves(functIA) {
     const gridSpans = document.getElementsByClassName('grid-cell');
     const gameGrid = document.getElementById('game-grid');
 
@@ -254,65 +249,59 @@ function handleIAandUserMoves(functIA) { // Creo que ya no es necesario el event
         span.addEventListener('click', function (event) {
             if (newGame.getCurrentTurn() === 'user' & event.isTrusted) {
                 const [x, y] = [+span.dataset.gridX, +span.dataset.gridY];
-                if (newGame.movIsValid(x, y)) {
-                    newGame.makeMove({ x, y }, 1);
-                    span.classList.add('clicked-cell-user');
-                } else {
-                    return;
-                }
-                if (gameIsOver()) {
-                    endGame('user');
-                    return;
-                } else {
-                    gameGrid.style.pointerEvents = 'none';
-                    newGame.changeCurrentTurn('oponent');
-                    const delayedMov = function () {
-                        functIA();
-                        if (gameIsOver()) {
-                            endGame('oponent');
-                            return;
-                        };
-                    }
-                    setTimeout(delayedMov, 600);
-                };
+                if (newGame.movIsValid(x, y)) userMoveOnListener(span, x, y);
+                else return;
+                if (gameIsOver()) endGame();
+                else IAdelayedMovement(functIA, gameGrid);
             } else if (newGame.getCurrentTurn() === 'oponent' & !event.isTrusted) {
-                span.classList.add('clicked-cell-oponent');
-                newGame.changeCurrentTurn('user');
-                gameGrid.style.pointerEvents = 'all';
+                IAvisualMovement(span, gameGrid);
             };
         }, { once: true });
     });
 };
-function gameIsOver() {
-    return (newGame.getStatus() != 'continue');
+function userMoveOnListener(span, x, y) {
+    newGame.makeMove({ x, y }, 1);
+    span.classList.add('clicked-cell-user');
 }
-function endGame(player) {
+function IAdelayedMovement(functIA, gameGrid) {
+    gameGrid.style.pointerEvents = 'none';
+    newGame.changeCurrentTurn('oponent');
+    setTimeout(functIA, 600);
+}
+function IAvisualMovement(span, gameGrid) {
+    span.classList.add('clicked-cell-oponent');
+    newGame.changeCurrentTurn('user');
+    gameGrid.style.pointerEvents = 'all';
+}
+function gameIsOver() {
+    return (newGame.getStatus()[0] != 'continue') ? true : false;
+}
+function endGame() {
     const dialogEnd = document.getElementById('end-game-dialog');
     const dialogTitle = document.getElementById('end-game-title');
     const userName = document.getElementById('grid-user-name');
     const oponentName = document.getElementById('grid-oponent-name');
+    const winnerPlayer = newGame.getStatus()[1];
+    const playerList = { 1: userName.textContent, 2: oponentName.textContent };
 
-    if (newGame.getStatus() === 'draw') {
-        dialogTitle.textContent = `Empate!`;
-    } else {
-        let winnerTxt = (player === 'user') ? userName.textContent : oponentName.textContent;
-        dialogTitle.textContent = `Ha ganado ${winnerTxt}`;
-    };
-    uploadScore(player, userName.textContent);
+    dialogTitle.textContent = (newGame.getStatus()[0] === 'draw')
+        ? `Empate!`
+        : `Ha ganado ${playerList[winnerPlayer]}`;
+    uploadScore(winnerPlayer, userName.textContent);
     newGame.restartGame();
     dialogEnd.classList.remove('hidden');
     dialogEnd.showModal();
 }
 function uploadScore(player, userName) {
-    const finalScore = (newGame.getStatus() === 'draw')
+    const finalScore = (newGame.getStatus()[0] === 'draw')
         ? 'd'
-        : (player === 'user')
+        : (player === 1)
             ? 'w'
             : 'l';
     const date = new Date;
     userScore.updateScore(userName, {
         score: finalScore,
-        date: `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear()}`
+        date: `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear().toString().slice(2)}`
     });
 }
 // Game & IA
@@ -427,7 +416,7 @@ function Game() {
         [0, 0, 0]
     ];
     _board.currentTurn;
-    _board.gameStatus = 'continue';
+    _board.gameStatus = ['continue', 0];
     const getCurrentTurn = () => {
         return _board.currentTurn;
     }
@@ -452,13 +441,11 @@ function Game() {
             const boardDiag = getDiagonal(x, y, _board);
             boardDiag.forEach(arr => setMoves.push(arr));
         };
-        if (setMoves.some(set => (set.every(value => value === symbol)))) return 'win';
-        if (_board.some(arr => arr.includes(0))) return 'continue';
-        else return 'draw';
+        if (setMoves.some(set => (set.every(value => value === symbol)))) return ['win', symbol];
+        if (_board.some(arr => arr.includes(0))) return ['continue', 0];
+        else return ['draw', 0];
     };
     const restartGame = () => {
-        // Limpiamos tablero, llama a actualizar LocalScore
-        // Si pierde, el score sería +1, o podríamos también restar -1 de score por perder?
         _board = [
             [0, 0, 0],
             [0, 0, 0],
