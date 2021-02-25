@@ -235,8 +235,10 @@ function gameAgainstIA(firstPlayer, functIA) {
     if (firstPlayer === 'user') newGame.changeCurrentTurn('user');
     else IAdelayedMovement(functIA, gameGrid);
 }
-function gameAgainstHuman(firstPlayer) {s
-    console.log(firstPlayer);
+function gameAgainstHuman(firstPlayer) {
+    handleUserVsUser();
+    if (firstPlayer === 'user') newGame.changeCurrentTurn('user');
+    else newGame.changeCurrentTurn('oponent');
 }
 function changeGameTitle() {
     const gameTitle = document.getElementById('game-start-title');
@@ -249,27 +251,50 @@ function changeGameTitle() {
     arrayData[0][index].classList.add('active');
     arrayData[1][index].classList.remove('active');
 }
+function handleUserVsUser() {
+    const gridSpans = document.getElementsByClassName('grid-cell');
+    function functionListenerUser() {
+        userVsUserMoves(this);
+        if (gameIsOver()) endGame(functionListenerUser);
+    }
+    Array.from(gridSpans).forEach(span => {
+        span.addEventListener('click', functionListenerUser, { once: true });
+    });
+}
+function userVsUserMoves(span) {
+    let symbolAndPlayer = (newGame.getCurrentTurn() === 'user')
+        ? [1, 'oponent']
+        : [2, 'user'];
+    const [x, y] = [+span.dataset.gridX, +span.dataset.gridY];
+    if (newGame.movIsValid(x, y)) {
+        userMoveOnListener(span, x, y, symbolAndPlayer[0]);
+        newGame.changeCurrentTurn(symbolAndPlayer[1]);
+    }
+}
 function handleIAandUserMoves(functIA) {
     const gridSpans = document.getElementsByClassName('grid-cell');
     const gameGrid = document.getElementById('game-grid');
 
+    function functionListener() {
+        if (newGame.getCurrentTurn() === 'user') {
+            const [x, y] = [+this.dataset.gridX, +this.dataset.gridY];
+            if (newGame.movIsValid(x, y)) userMoveOnListener(this, x, y, 1);
+            else return;
+            if (gameIsOver()) endGame(functionListener); 
+            else IAdelayedMovement(functIA, gameGrid);
+        } else if (newGame.getCurrentTurn() === 'oponent') {
+            IAvisualMovement(this, gameGrid);
+            if (gameIsOver()) endGame(functionListener);
+        };
+    }
     Array.from(gridSpans).forEach(span => {
-        span.addEventListener('click', function (event) {
-            if (newGame.getCurrentTurn() === 'user' & event.isTrusted) {
-                const [x, y] = [+span.dataset.gridX, +span.dataset.gridY];
-                if (newGame.movIsValid(x, y)) userMoveOnListener(span, x, y);
-                else return;
-                if (gameIsOver()) endGame();
-                else IAdelayedMovement(functIA, gameGrid);
-            } else if (newGame.getCurrentTurn() === 'oponent' & !event.isTrusted) {
-                IAvisualMovement(span, gameGrid);
-            };
-        }, { once: true });
+        span.addEventListener('click', functionListener, { once: true });
     });
 };
-function userMoveOnListener(span, x, y) {
-    newGame.makeMove({ x, y }, 1);
-    span.classList.add('clicked-cell-user');
+function userMoveOnListener(span, x, y, symbol) {
+    const cellClass = ['clicked-cell-user', 'clicked-cell-oponent'];
+    newGame.makeMove({ x, y }, symbol);
+    span.classList.add(cellClass[symbol - 1]);
 }
 function IAdelayedMovement(functIA, gameGrid) {
     gameGrid.style.pointerEvents = 'none';
@@ -280,12 +305,15 @@ function IAvisualMovement(span, gameGrid) {
     span.classList.add('clicked-cell-oponent');
     newGame.changeCurrentTurn('user');
     gameGrid.style.pointerEvents = 'all';
-    if (gameIsOver()) endGame();
 }
 function gameIsOver() {
     return (newGame.getStatus()[0] != 'continue') ? true : false;
 }
-function endGame() {
+function endGame(functionToRemove) {
+    const gridSpans = document.getElementsByClassName('grid-cell');
+    Array.from(gridSpans).forEach(span => {
+        span.removeEventListener('click', functionToRemove, {once: true})
+    });
     const dialogEnd = document.getElementById('end-game-dialog');
     const dialogTitle = document.getElementById('end-game-title');
     const userName = document.getElementById('grid-user-name');
