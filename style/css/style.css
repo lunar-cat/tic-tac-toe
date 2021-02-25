@@ -113,7 +113,13 @@ p {
   z-index: -99;
 }
 
-.btn-main {
+.hidden-opa {
+  opacity: 0;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.btn-main, .leaderboard > .clear-leader-btn {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -130,19 +136,19 @@ p {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  -webkit-transition: all 0s ease;
-  transition: all 0s ease;
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
   cursor: pointer;
   font-weight: bold;
   height: 30px;
   font-size: medium;
 }
 
-.btn-main:active {
+.btn-main:active, .leaderboard > .clear-leader-btn:active {
   border: 1px solid white;
 }
 
-.btn-main:hover {
+.btn-main:hover, .leaderboard > .clear-leader-btn:hover {
   opacity: 0.8;
 }
 
@@ -247,26 +253,45 @@ p {
 
 .leaderboard {
   top: 10vh;
+  height: 80vh;
   position: absolute;
   width: 100%;
-  background: var(--background-secondary-color);
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-  z-index: 99;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.94)), to(rgba(0, 0, 0, 0.795)));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(0, 0, 0, 0.795));
+  -webkit-transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.leaderboard.leader-active {
+  z-index: 50;
+}
+
+.leaderboard.leader-inactive {
+  z-index: -99;
+}
+
+.leaderboard > .clear-leader-btn {
+  position: absolute;
+  top: 15%;
+  padding: 10px 5px;
 }
 
 .leaderboard > .leaderboard-title {
   font-size: 2.2rem;
   color: var(--secondary-color);
   height: 20%;
+  width: 100%;
   padding: 2%;
   font-weight: bolder;
+  background-color: var(--background-secondary-color);
 }
 
 .leaderboard .leaderboard-container {
-  height: 80%;
-  width: 90%;
+  background-color: var(--background-secondary-color);
+  width: 100%;
   color: var(--main-color);
+  padding: 1% 5%;
+  border-radius: 0 0 15px 15px;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 2fr 1fr 1fr 1fr 2fr;
@@ -286,6 +311,9 @@ p {
   width: 100%;
   background-color: var(--background-main-color);
   border-radius: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .leaderboard .leaderboard-container > span.leader-title {
@@ -362,7 +390,7 @@ p {
   width: 20%;
   height: 12%;
   position: absolute;
-  z-index: 3;
+  z-index: 1;
   top: 5%;
   border: 2px solid var(--secondary-contrast-color);
   border-radius: 5px;

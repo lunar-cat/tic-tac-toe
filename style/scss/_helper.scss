@@ -33,6 +33,10 @@
     opacity: 0;
     z-index: -99;
 }
+.hidden-opa {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
 @mixin mix-grid($colWidth, $rowsHeight, $rowGap, $colGap) {
     display: grid;
     grid-template-columns: $colWidth;
@@ -49,7 +53,7 @@
     background-color: #376e70; // no es el $secondary-color porque tenía problemas de accesibilidad
     color: $main-color;
     user-select: none;
-    transition: all 0s ease;
+    transition: all 0.1s ease;
     cursor: pointer;
     font-weight: bold;
     &:active {

@@ -73,7 +73,10 @@ loadScores();
     const leaderBoard = document.getElementById('leaderboard');
     menuBtn.addEventListener('click', function () {
         menuBtn.classList.toggle('open');
-        leaderBoard.classList.toggle('hidden');
+        leaderBoard.classList.toggle('hidden-opa');
+        leaderBoard.classList.toggle('leader-active');
+        leaderBoard.classList.toggle('leader-inactive');
+
     });
 }();
 +function changeOponent() {
@@ -181,6 +184,11 @@ function loadScores() {
         leaderboardContainer.append(scoreName, scoreWin, scoreLose, scoreDraw, scoreDate);
     });
 }
++function clearScores() {
+    if (!localStorage.length) return;
+    const clearBtn = document.getElementById('clear-leader-btn');
+    clearBtn.addEventListener('click', userScore.clearScores);
+}();
 
 // Game
 function cleanGrid() {
@@ -227,7 +235,7 @@ function gameAgainstIA(firstPlayer, functIA) {
     if (firstPlayer === 'user') newGame.changeCurrentTurn('user');
     else IAdelayedMovement(functIA, gameGrid);
 }
-function gameAgainstHuman(firstPlayer) {
+function gameAgainstHuman(firstPlayer) {s
     console.log(firstPlayer);
 }
 function changeGameTitle() {
@@ -272,6 +280,7 @@ function IAvisualMovement(span, gameGrid) {
     span.classList.add('clicked-cell-oponent');
     newGame.changeCurrentTurn('user');
     gameGrid.style.pointerEvents = 'all';
+    if (gameIsOver()) endGame();
 }
 function gameIsOver() {
     return (newGame.getStatus()[0] != 'continue') ? true : false;
@@ -482,7 +491,10 @@ function LocalScore() {
         parsedScores.sort((a, b) => +a[1] - +b[1]);
         return parsedScores;
     };
-    return { updateScore, getScores };
+    const clearScores = () => {
+        localStorage.clear();
+    }
+    return { updateScore, getScores, clearScores };
 }
 
 
